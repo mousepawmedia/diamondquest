@@ -1,0 +1,9 @@
+*.bin
+*.a
+*.o
+*.exe
+**/bin
+**/obj
+**/lib
+*.depend
+*.ignore
