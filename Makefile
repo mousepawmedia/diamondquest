@@ -12,7 +12,7 @@ lint:
 	@pylint3 --rcfile=pylintrc diamondquest
 
 run:
-	@python3 diamondquest/diamondquest.py
+	@python3 -m diamondquest
 
 test:
 	@python3 -m pytest elements
