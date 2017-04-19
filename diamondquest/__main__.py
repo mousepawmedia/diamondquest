@@ -21,10 +21,25 @@ def startup(screen):
     curses.curs_set(False)
 
     main_menu = menus.MainMenu(screen)
-    main_menu.show()
+    game_credits = menus.GameCredits(screen)
 
-    # Wait for a key press.
-    screen.getch()
+    while True:
+        # Display main menu.
+        option = main_menu.show()
+
+        # Start the game.
+        if option == 0:
+            return
+        # Display the high scores.
+        elif option == 1:
+            return
+        # Show the credits.
+        elif option == 2:
+            game_credits.display()
+        # Quit the game
+        elif option == 3:
+            return
+
     # The wrapper handles exiting correctly.
 
 
