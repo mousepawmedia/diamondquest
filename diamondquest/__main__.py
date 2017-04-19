@@ -20,7 +20,8 @@ def startup(screen):
     # Hide the blinking cursor by default.
     curses.curs_set(False)
 
-    menus.title(screen)
+    main_menu = menus.MainMenu(screen)
+    main_menu.show()
 
     # Wait for a key press.
     screen.getch()
