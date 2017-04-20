@@ -35,6 +35,61 @@ class DebugText:
         self.screen.clrtoeol()
         self.screen.refresh()
 
+class Teletype:
+    """
+    Display text with gradual reveal.
+    """
+
+    def __init__(self, screen):
+        """
+        Initialize a new Teletype display on the given curses screen.
+        """
+        # Store the screen instance we're working on.
+        self.screen = screen
+        # Start our row incrementer.
+        self.row = 0
+        # Store the size of the console.
+        self.rows = screen.getmaxyx()[0]
+        self.cols = screen.getmaxyx()[1]
+
+    def addline(self, text, delay=0.1, attr=None):
+        """
+        Display the given line of text on the teletype display.
+
+        Parameters
+        --------------
+        text : str
+            The string to display
+        delay : float, optional
+            The delay in seconds between showing each letter, default 0.1.
+        attr : curses attributes, optional
+            The attributes to apply to the text.
+        """
+        # If we're out of space, clear the screen and reset our row count.
+        if self.row >= self.rows:
+            self.screen.clear()
+            self.reset()
+
+        col = 0
+        for char in text:
+            col = col + 1
+            #Loop through and display each, with a delay.
+            if attr is None:
+                self.screen.addch(self.row, col, char)
+            else:
+                self.screen.addch(self.row, col, char, attr)
+            self.screen.refresh()
+            # Sleep, if requested.
+            if delay > 0:
+                time.sleep(delay)
+
+
+    def reset(self):
+        """
+        Reset the teletype display.
+        """
+        self.row = 0
+
 class HoverMenu:
     """
     A selectable menu.
@@ -174,7 +229,19 @@ class HoverMenu:
                 # NOTE: WE use '10' (line break) instead of the more unreliable
                 # constant 'curses.KEY_ENTER'.
                 elif key == 10:
-                    return self.data.nav_select()
+                    # Get the selected option BEFORE destroying the data.
+                    option = self.data.nav_select()
+                    # We must reset the menu before leaving it,
+                    # or it will redraw wrong later.
+                    self.reset()
+                    return option
+
+    def reset(self):
+        """
+        Reset the menu, erasing all data and rows. We'll redraw later.
+        """
+        self.row = 0
+        self.data = data.MenuStructure()
 
 
 class CreditReel:
@@ -199,6 +266,9 @@ class CreditReel:
         self.row = 0
         # Store the width, used in calcuating how to center the text.
         self.cols = screen.getmaxyx()[1]
+        # Store the height, so we can clear and keep going when we run out
+        # of room.
+        self.row_max = screen.getmaxyx()[0] - 1
 
     def _centerplaceline(self, text, attr=None):
         """
@@ -211,6 +281,11 @@ class CreditReel:
         attr : curses attributes, optional
             The attributes to apply to the text.
         """
+        # If we're out of space, clear the screen and reset our row count.
+        if self.row >= self.row_max:
+            self.screen.clear()
+            self.reset()
+
         if attr is None:
             self.screen.addstr(self.row, self.cols // 2 - len(text) // 2, \
                                text + "\n")
@@ -266,6 +341,9 @@ class CreditReel:
 
         # Display the line of text initially.
         self._centerplaceline(text, attr)
+
+        # Throw away any key presses that were prior to this.
+        curses.flushinp()
 
         if blink:
             # Don't pause waiting for keypress.

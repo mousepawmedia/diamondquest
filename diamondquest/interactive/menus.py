@@ -25,18 +25,19 @@ class MainMenu:
 
     def show(self):
         """
-        Display the menu.
+        Display the menu, returning the selected option number.
         """
 
+        # Show the title, if we haven't already.
         if self.is_title_shown is False:
             self._title()
 
-        # Clear the screen and reset the reel.
+        # Clear the screen.
         self.screen.clear()
         self.screen.refresh()
 
-        # Display the menu.
-        self._menu()
+        # Display the menu, returning the selected option.
+        return self._menu()
 
 
     def _menu(self):
@@ -79,12 +80,35 @@ class MainMenu:
         self.reel.addline("by MousePaw Games", 1, curses.A_BOLD)
         self.reel.addline("www.mousepawgames.com", 1)
         self.reel.addline("", 0)
+
         # This last line waits for keypress.
         self.reel.addwaitline("Press Any Key To Continue...", True)
+        # Reset the reel, in case we need to redraw.
+        self.reel.reset()
         # Don't repeat the title credits next time we show this menu instance.
         self.is_title_shown = True
 
+    def reset(self, reshow_title=True):
+        """
+        Reset the menu.
+
+        Parameters
+        ------------------
+        reshow_title : bool, optional
+            If True, will reshow the title credits next time show() is called.
+        """
+        # If we were asked to reshow the title next time, be sure to
+        # reset the title flag AND the title credits object itself.
+        if reshow_title:
+            self.is_title_shown = False
+            self.reel.reset()
+        # Reset the menu, so it can be redrawn properly.
+        self.hovermenu.reset()
+
 class GameCredits:
+    """
+    DiamondQuest's full game credits.
+    """
 
     def __init__(self, screen):
         # Store the screen
@@ -97,12 +121,36 @@ class GameCredits:
         Display the game title.
         """
         # Show game credits.
-        self.reel.addline("DIAMONDQUEST 2.0", 1, curses.A_BOLD)
-        self.reel.addline("by MousePaw Games", 1, curses.A_BOLD)
-        self.reel.addline("Concept and Programming by Jason C. McDonald", 1)
-        self.reel.addline("Diamond ASCII art by miK", 1)
-        self.reel.addline("Most Additional ASCII art by Joan G Stark", 1)
+        self.reel.addline("DiamondQuest, Version 2.0", 1, curses.A_BOLD)
+        self.reel.addline("")
+        self.reel.addline("Produced by MousePaw Games", 1)
+        self.reel.addline("www.mousepawgames.com", 1)
+        self.reel.addline("")
+        self.reel.addline("Concept by Jason C. McDonald", 1)
+        self.reel.addline("")
+        self.reel.addline("PROGRAMMING", 1)
+        self.reel.addline("Jason C. McDonald", 1)
+        self.reel.addline("")
+        self.reel.addline("ART AND DESIGN", 1)
+        self.reel.addline("Interface Design: Jason C. McDonald", 1)
+        self.reel.addline("Diamond ASCII Art: miK", 1)
+        self.reel.addline("Additional ASCII Art: Joan G Stark", 1)
+        self.reel.addline("")
+        self.reel.addline("EDUCATIONAL CONTENT", 1)
+        self.reel.addline("Jason C. McDonald", 1)
+        self.reel.addline("")
+        self.reel.addline("TECHNOLOGY", 1)
+        self.reel.addline("Written in Python 3", 1)
+        self.reel.addline("Designed Using Curses for Python", 1)
+        self.reel.addline("")
+        self.reel.addline("Thanks for playing!", 1)
         self.reel.addline("", 0)
         # This last line waits for keypress.
         self.reel.addwaitline("Press Any Key To Continue...", True)
+        self.reset()
+
+    def reset(self):
+        """
+        Reset the game credits.
+        """
         self.reel.reset()
