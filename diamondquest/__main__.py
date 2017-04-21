@@ -46,8 +46,18 @@ def startup(screen):
             debug.output("High Scores: Not Yet Implemented")
             screen.getch()
 
-        # Show the credits.
+        # Display the educational goals.
         elif option == 2:
+            debug.output("Educational Goals: Not Yet Implemented")
+            screen.getch()
+
+        # Display the settings.
+        elif option == 3:
+            debug.output("Settings: Not Yet Implemented")
+            screen.getch()
+
+        # Show the credits.
+        elif option == 4:
             # Clear the screen.
             screen.clear()
             screen.refresh()
@@ -55,7 +65,7 @@ def startup(screen):
             game_credits.display()
 
         # Quit the game
-        elif option == 3:
+        elif option == 5:
             # Exit the game.
             break
 

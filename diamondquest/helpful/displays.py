@@ -7,7 +7,7 @@ Author(s): Jason C. McDonald
 
 import time
 import curses
-from diamondquest.helpful import data
+from diamondquest.helpful import data, exceptions
 
 class DebugText:
     """
@@ -308,6 +308,9 @@ class CreditReel:
         attr : curses attributes, optional
             The attributes to apply to the text.
         """
+        # Don't pause waiting for keypress.
+        self.screen.nodelay(True)
+
         # Display the line of text.
         self._centerplaceline(text, attr)
 
@@ -317,6 +320,14 @@ class CreditReel:
         # Sleep, if requested.
         if timeout > 0:
             time.sleep(timeout)
+
+        key = self.screen.getch()
+
+        # Restore waiting for keypress
+        self.screen.nodelay(False)
+
+        if key == 27:
+            raise exceptions.EscException()
 
     def addwaitline(self, text, blink, attr=None):
         """

@@ -16,3 +16,14 @@ class ConsoleSizeException(Exception):
 80x24. Resize and try again."
         # Call the base class constructor with the parameters it needs
         super().__init__(message)
+
+
+class EscException(Exception):
+    """
+    If Esc is pressed, this is thrown.
+    """
+    def __init__(self, message=""):
+        if message == "":
+            message = "The escape key was pressed, but not properly handled."
+        # Call the base class constructor with the parameters it needs.
+        super().__init__(message)

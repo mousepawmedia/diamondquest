@@ -6,7 +6,14 @@ Author(s): Jason C. McDonald
 """
 
 import curses
-from diamondquest.helpful import displays
+from diamondquest.helpful import displays, exceptions
+
+class GameMenu:
+    """
+    The New Game menu.
+    """
+    def __init__(self, screen):
+        self.screen = screen
 
 class MainMenu:
     """
@@ -51,8 +58,12 @@ class MainMenu:
         # Option 1
         self.hovermenu.addmenuline("High Scores", 0.1)
         # Option 2
-        self.hovermenu.addmenuline("Credits", 0.1)
+        self.hovermenu.addmenuline("Educational Goals", 0.1)
         # Option 3
+        self.hovermenu.addmenuline("Settings", 0.1)
+        # Option 4
+        self.hovermenu.addmenuline("Credits", 0.1)
+        # Option 5
         self.hovermenu.addmenuline("Quit", 0.1)
 
         # Give the menu control.
@@ -62,27 +73,33 @@ class MainMenu:
         """
         Display the game title.
         """
-        # Show opening credits, with delays after each credit line.
-        self.reel.addline("      __________________        ")
-        self.reel.addline("    .-'  \\ _.-''-._ /  '-.     ")
-        self.reel.addline("  .-/\\   .'.      .'.   /\\-.  ")
-        self.reel.addline(" _'/  \\.'   '.  .'   './  \\'_ ")
-        self.reel.addline(":======:======::======:======:  ")
-        self.reel.addline(" '. '.  \\     ''     /  .' .'  ")
-        self.reel.addline("   '. .  \\   :  :   /  . .'    ")
-        self.reel.addline("     '.'  \\  '  '  /  '.'      ")
-        self.reel.addline("       ':  \\:    :/  :'        ")
-        self.reel.addline("         '. \\    / .'          ")
-        self.reel.addline("           '.\\  /.'            ")
-        self.reel.addline("             '\\/'              ")
-        self.reel.addline("")
-        self.reel.addline("DIAMONDQUEST 2.0", 1, curses.A_BOLD)
-        self.reel.addline("by MousePaw Games", 1, curses.A_BOLD)
-        self.reel.addline("www.mousepawgames.com", 1)
-        self.reel.addline("", 0)
+        try:
+            # Show opening credits, with delays after each credit line.
+            self.reel.addline("      __________________        ")
+            self.reel.addline("    .-'  \\ _.-''-._ /  '-.     ")
+            self.reel.addline("  .-/\\   .'.      .'.   /\\-.  ")
+            self.reel.addline(" _'/  \\.'   '.  .'   './  \\'_ ")
+            self.reel.addline(":======:======::======:======:  ")
+            self.reel.addline(" '. '.  \\     ''     /  .' .'  ")
+            self.reel.addline("   '. .  \\   :  :   /  . .'    ")
+            self.reel.addline("     '.'  \\  '  '  /  '.'      ")
+            self.reel.addline("       ':  \\:    :/  :'        ")
+            self.reel.addline("         '. \\    / .'          ")
+            self.reel.addline("           '.\\  /.'            ")
+            self.reel.addline("             '\\/'              ")
+            self.reel.addline("")
+            self.reel.addline("DIAMONDQUEST 2.0", 1, curses.A_BOLD)
+            self.reel.addline("by MousePaw Games", 1, curses.A_BOLD)
+            self.reel.addline("www.mousepawgames.com", 1)
+            self.reel.addline("", 0)
 
-        # This last line waits for keypress.
-        self.reel.addwaitline("Press Any Key To Continue...", True)
+            # This last line waits for keypress.
+            self.reel.addwaitline("Press Any Key To Continue...", True)
+
+        # If the Esc key was pressed, abort credits and continue.
+        except exceptions.EscException:
+            pass
+
         # Reset the reel, in case we need to redraw.
         self.reel.reset()
         # Don't repeat the title credits next time we show this menu instance.
@@ -120,33 +137,39 @@ class GameCredits:
         """
         Display the game title.
         """
-        # Show game credits.
-        self.reel.addline("DiamondQuest, Version 2.0", 1, curses.A_BOLD)
-        self.reel.addline("")
-        self.reel.addline("Produced by MousePaw Games", 1)
-        self.reel.addline("www.mousepawgames.com", 1)
-        self.reel.addline("")
-        self.reel.addline("Concept by Jason C. McDonald", 1)
-        self.reel.addline("")
-        self.reel.addline("PROGRAMMING", 1)
-        self.reel.addline("Jason C. McDonald", 1)
-        self.reel.addline("")
-        self.reel.addline("ART AND DESIGN", 1)
-        self.reel.addline("Interface Design: Jason C. McDonald", 1)
-        self.reel.addline("Diamond ASCII Art: miK", 1)
-        self.reel.addline("Additional ASCII Art: Joan G Stark", 1)
-        self.reel.addline("")
-        self.reel.addline("EDUCATIONAL CONTENT", 1)
-        self.reel.addline("Jason C. McDonald", 1)
-        self.reel.addline("")
-        self.reel.addline("TECHNOLOGY", 1)
-        self.reel.addline("Written in Python 3", 1)
-        self.reel.addline("Designed Using Curses for Python", 1)
-        self.reel.addline("")
-        self.reel.addline("Thanks for playing!", 1)
-        self.reel.addline("", 0)
-        # This last line waits for keypress.
-        self.reel.addwaitline("Press Any Key To Continue...", True)
+
+        try:
+            # Show game credits.
+            self.reel.addline("DiamondQuest, Version 2.0", 1, curses.A_BOLD)
+            self.reel.addline("")
+            self.reel.addline("Produced by MousePaw Games", 1)
+            self.reel.addline("www.mousepawgames.com", 1)
+            self.reel.addline("")
+            self.reel.addline("Concept by Jason C. McDonald", 1)
+            self.reel.addline("")
+            self.reel.addline("PROGRAMMING", 1)
+            self.reel.addline("Jason C. McDonald", 1)
+            self.reel.addline("")
+            self.reel.addline("ART AND DESIGN", 1)
+            self.reel.addline("Interface Design: Jason C. McDonald", 1)
+            self.reel.addline("Diamond ASCII Art: miK", 1)
+            self.reel.addline("Additional ASCII Art: Joan G Stark", 1)
+            self.reel.addline("")
+            self.reel.addline("EDUCATIONAL CONTENT", 1)
+            self.reel.addline("Jason C. McDonald", 1)
+            self.reel.addline("")
+            self.reel.addline("TECHNOLOGY", 1)
+            self.reel.addline("Written in Python 3", 1)
+            self.reel.addline("Designed Using Curses for Python", 1)
+            self.reel.addline("")
+            self.reel.addline("Thanks for playing!", 1)
+            self.reel.addline("", 0)
+            # This last line waits for keypress.
+            self.reel.addwaitline("Press Any Key To Continue...", True)
+        # If the Esc key was pressed, abort credits and continue.
+        except exceptions.EscException:
+            pass
+
         self.reset()
 
     def reset(self):
