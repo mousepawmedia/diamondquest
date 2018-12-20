@@ -8,6 +8,11 @@
 *.depend
 *.ignore
 
+.env
+.pk
+.pem
+.pub
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
