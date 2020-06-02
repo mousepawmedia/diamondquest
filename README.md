@@ -56,7 +56,16 @@ Educational Design:
 ## Dependencies
 
 DiamondQuest is built with **Python 3.7** and **PyGame**.
-(Full dependency list coming soon.)
+See *requirements.txt* for full dependency list.
+
+## Development
+
+To get started on development quickly, we've also provided
+*requirements_dev.txt* and a Makefile. On any system supporting Makefiles,
+ensure you have Python 3.7 installed, and then run `make venv` to create the
+virtual environment with all required dependencies for development.
+
+See `make help` for the Makefile's other uses.
 
 ## Contributions
 
