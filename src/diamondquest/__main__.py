@@ -2,14 +2,14 @@
 import pygame
 from pygame.locals import *
 from diamondquest.hello import hello
-from diamondquest.view import PyGameView
+from diamondquest.view import GameView
 
 
 def main():
     pygame.init()
 
     model = GameModel()
-    view = PyGameView()
+    view = GameView()
     running = True
     while running:
         # ControllerTick()

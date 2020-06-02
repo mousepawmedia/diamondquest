@@ -1,1 +1,1 @@
-from .pygameview import PyGameView
+from .gameview import GameView

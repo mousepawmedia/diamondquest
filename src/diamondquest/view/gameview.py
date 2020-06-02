@@ -9,7 +9,7 @@ def draw_map(screen, map_model):
     )
 
 
-class PyGameView:
+class GameView:
     """Top-level view for the whole game
     """
 
