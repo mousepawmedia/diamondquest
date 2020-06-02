@@ -3,19 +3,26 @@ none: help
 help:
 	@echo "DiamondQuest: A math mining adventure."
 	@echo
-	@echo "run            Run DiamondQuest directly from this repository."
-	@echo "lint           Run pylint3 on the DiamondQuest package."
-	@echo "test           Run pytests for DiamondQuest."
+	@echo "run			Run DiamondQuest."
+	@echo "test			Run pytests for DiamondQuest."
+	@echo "tidy			Tidy up cruft (pyc, pycache, eggs)."
+	@echo
+	@echo "venv			Build the venv based on requirements.txt"
+	@echo "clean		Delete the venv"
 
+clean:
+	rm -r venv
 
-lint:
-	@pylint3 --rcfile=pylintrc diamondquest
+venv:
+	python3.7 -m venv venv
+	venv/bin/pip install --upgrade pip
+	venv/bin/pip install -r requirements.txt
+	
+run: venv
+	cd src && ../venv/bin/python3 -m diamondquest
 
-run:
-	@python3 -m diamondquest
-
-test:
-	@python3 -m pytest elements
-
-
-.PHONY: lint run test
+test: venv
+	cd src && ../venv/bin/python3 -m pytest diamondquest
+	
+tidy: venv
+	venv/bin/python3 -m pycleanup --egg --pyc --cache

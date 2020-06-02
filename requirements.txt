@@ -1,0 +1,8 @@
+# program dependencies
+pygame
+
+# development tools
+black
+flake8
+pycleanup
+pytest
