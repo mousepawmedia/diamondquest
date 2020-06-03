@@ -21,6 +21,9 @@ venv:
 run: venv
 	cd src && ../venv/bin/python3 -m diamondquest
 
+format: venv
+	cd src && ../venv/bin/black -l 80 diamondquest
+
 test: venv
 	cd src && ../venv/bin/python3 -m pytest diamondquest
 	

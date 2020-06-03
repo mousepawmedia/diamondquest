@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "usr/bin/python3.7",
+    "python.pythonPath": "venv/bin/python",
     "cSpell.words": [
         "pygame"
     ]
