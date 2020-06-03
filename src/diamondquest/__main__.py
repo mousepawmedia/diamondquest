@@ -14,7 +14,7 @@ def main():
     while running:
         # ControllerTick()
         # ViewTick()
-        for event in ygame.event.get():
+        for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
                 # Handle Events
