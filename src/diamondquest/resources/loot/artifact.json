@@ -1,0 +1,26 @@
+{
+    "laundry_junk": {
+        "frequency": 5,
+        "age": 1,
+        "items": {
+            "clothespin": 8,
+            "coat_hanger": 5,
+            "washboard": 2,
+            "lost_sock": 1
+        }
+    },
+    "lookit_what_i_found": {
+        "frequency": 5,
+        "age": 1,
+        "items": {
+            "weird_rock": 8,
+            "nail": 4,
+            "bone": 3,
+            "spoon": 3,
+            "fork": 3,
+            "old_penny": 2,
+            "old_key": 2
+        }
+        
+    }
+}

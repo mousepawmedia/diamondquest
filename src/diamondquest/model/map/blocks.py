@@ -116,7 +116,7 @@ class Block:
         self.decor_offset = offset
 
     def is_solid(self):
-        return self.type != 0
+        return self.type != BlockType.AIR
 
     def can_anchor(self):
         """Returns whether a hook can be attached to the block."""
@@ -128,7 +128,7 @@ class Block:
 
     def can_stand(self):
         """Returns whether the block can be stood on."""
-        return self.type != 0
+        return self.type != BlockType.AIR
 
     def get_removed(self):
         """Return a new block to replace this one when it is removed.

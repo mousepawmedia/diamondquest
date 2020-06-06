@@ -55,13 +55,13 @@ class Direction(Enum):
     """
 
     HERE = 0
-    BELOWRIGHT = 1
+    BELOW_RIGHT = 1
     BELOW = 2
-    BELOWLEFT = 3
+    BELOW_LEFT = 3
     LEFT = 4
-    ABOVELEFT = 5
+    ABOVE_LEFT = 5
     ABOVE = 6
-    ABOVERIGHT = 7
+    ABOVE_RIGHT = 7
     RIGHT = 8
 
     @staticmethod
@@ -80,13 +80,13 @@ class Direction(Enum):
     def is_horizontal(direction):
         """Returns whether the direction is horizontal."""
         # Directions 4 and 8 are horizontal
-        return direction > 0 and direction % 4 == 0
+        return direction > 0 and not direction % 4
 
     @staticmethod
     def is_diagonal(direction):
         """Returns whether the direction is diagonal."""
         # Odd directions are diagonal.
-        return direction > 0 and direction % 2 == 0
+        return direction > 0 and direction % 2
 
     @staticmethod
     def is_vertical(direction):
