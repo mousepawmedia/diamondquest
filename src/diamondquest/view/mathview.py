@@ -6,12 +6,12 @@ from diamondquest.view.window import Window, Views
 """ Deals with MathView
 """
 # window.draw_shadow()
-# TODO: 
+# TODO:
 
 
 def draw_puzzle(problem):
 
-    font = pygame.font.Font('PrefferedFont.ttf', 24)
+    font = pygame.font.Font("PrefferedFont.ttf", 24)
     rendered_problem = font.render(problem, True, (0, 0, 255))
     problem_display_area = rendered_problem.get_rect()
     # problem_display_area.center = ()

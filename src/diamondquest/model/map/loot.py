@@ -54,7 +54,7 @@ class LootTables:
     }
 
     @classmethod
-    def roll(cls, loot_table, amount, age):
+    def roll(cls, loot_table, amount, age, prefer=None):
         """
         Rolls a number of loot based on the table provided.
         """
@@ -70,25 +70,21 @@ class LootTables:
         # List of items with repeated elements for rolling
         items = []
 
-        # Iterate over all collections that match the age passed
-        for k, v in table.items().filter(lambda _, b: b.age == age):
-            # Add the name of the collection equal to the frequency to the list
-            for i in range(v["frequency"]):
-                collections.append(k)
+        if prefer is None or random.randint(0, 3) == 0:
+            # Iterate over all collections that match the age passed
+            collections = [
+                [name] * val["frequency"]
+                for name, val in table.items()
+                if val["age"] == age
+            ]
+            collections = [item for col in collections for item in col]
 
-        # Iterate over a randomly selected collection
-        for name, val in table[LootTables._getItem(collections, 1)].items():
-            # Add the name of the item to the list equal to the frequency
-            for i in range(val["frequency"]):
-                items.append(name)
+            # Iterate over a randomly selected collection
+            col = random.choice(collections)
+        else:
+            col = prefer
 
-        return LootTables._getItem(items, amount)
+        items = [[name] * val for name, val in table[col]["items"].items()]
+        items = [item for col in items for item in col]
 
-    @staticmethod
-    def _getItem(list, amount):
-        """
-        Shuffles a collection and returns the first amount elements.
-        """
-
-        random.shuffle(list)
-        return list[0:amount]
+        return random.choice(items)

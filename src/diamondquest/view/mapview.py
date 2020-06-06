@@ -7,6 +7,7 @@ from diamondquest.view.window import Window, Views
 # TODO: Account for window resizing (rescaling the map to adapt)
 # TODO: Queue function (e.g. spot (x,y) has changed, put in the queue -> see redraw())
 
+
 class MapView:
     def redraw(x, y):
         # Multiple keys pressed: queue system
@@ -18,13 +19,17 @@ class MapView:
         """
         if x == -1 and y == -1:
             # Change whole map
-        else if x != -1 and y == -1:
+            pass
+        elif x != -1 and y == -1:
             # Change entire column at row x
-        else if x == -1 and y != -1:
+            pass
+        elif x == -1 and y != -1:
             # Change entire row at column y
+            pass
         else:
             # Change specific block at x, y
-        """Player movement r edraw handled as well (offset for smooth movement)
+            pass
+        """Player movement redraw handled as well (offset for smooth movement)
         Use percentage for offset (target pos +or- new pos * offset)
         """
 
@@ -34,7 +39,7 @@ class MapView:
         y - the y block position
         """
 
-# where the anchor is, current state, x location, y location
+    # where the anchor is, current state, x location, y location
     def redraw_avatar(x, y):
         """Redraws the avatar as they move"""
 
