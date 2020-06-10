@@ -1,6 +1,10 @@
+import math
 from enum import Enum
+
 import pygame
+
 from diamondquest.common import color
+from diamondquest.common.constants import BLOCK_COUNT
 
 
 class Views(Enum):
@@ -12,21 +16,31 @@ class Views(Enum):
 class Window:
     shadowed = False
     views = Views.MAP
+    resolution = (800, 600)
 
     # contains cached versions of the surfaces
     surface_cache = [None, None, None]
 
     @classmethod
     def draw_window(
-        cls, width=640, height=480, caption="DiamondQuest", color=color.black
+        cls, caption="DiamondQuest", color=color.sky
     ):
         # TODO: Can we resize the window dynamically, or does the code need to handle that?
-        screen = pygame.display.set_mode((width, height))
+        screen = pygame.display.set_mode(cls.resolution)
 
         pygame.display.set_caption(caption)
         screen.fill(color)
 
         pygame.display.flip()
+
+    @classmethod
+    def set_resolution(cls, width, height):
+        cls.resolution = (width, height)
+        
+    @classmethod
+    def get_block_height(cls):
+        # TODO: Must eventually be guaranteed as a multiple of 16
+        return math.floor(cls.resolution[1] / BLOCK_COUNT)
 
     @classmethod
     def draw_shadow(cls):

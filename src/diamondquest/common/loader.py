@@ -43,6 +43,8 @@ Author(s): Jason C. McDonald
 from pathlib import Path
 import json
 
+import pygame
+
 resource_path = Path(__file__).resolve().parents[1] / "resources"
 
 
@@ -56,3 +58,11 @@ def read_json(path):
 
 def read_loot_table(table):
     return read_json(f"loot/{table}.json")
+
+
+def load_texture(texture, subfolder='textures'):
+    """Load texture from resource directory."""
+    # TODO: Cache this puppy!
+    load_path = resource_path / subfolder / f"{texture}.gif"
+    with load_path.open('rb') as img:
+        return pygame.image.load(img)
