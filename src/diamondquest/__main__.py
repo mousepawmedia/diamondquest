@@ -3,6 +3,8 @@ import pygame
 from pygame.locals import *
 from diamondquest.hello import hello
 from diamondquest.view.window import Window
+from diamondquest.controller import keyboardcontroller
+from diamondquest.common.constants import FPS
 
 # Temporary imports here...
 from diamondquest.model.map.loot import LootTables
@@ -14,21 +16,28 @@ def terrible_test_code_function():
     # print(LootTables.roll("artifact", 5, 1, "must"))
 
 
+
+
+
 def main():
     pygame.init()
+    clock = pygame.time.Clock()
+
 
     # model = GameModel()
     window = Window()
+
+    window.draw_window()
+
     running = True
     while running:
-        # ControllerTick()
-        # ViewTick()
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                running = False
-                # Handle Events
-        window.draw_window()
-        # draw model
+            # This keeps the loop running at 16 times a second roughly, might be better way to handle it.
+            clock.tick(FPS)
+
+            # Controller Tick - Handle Input
+            running = keyboardcontroller.inputHandling()
+            # System Tick - Update Model
+            # View Tick - Update View
 
 
 if __name__ == "__main__":

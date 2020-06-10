@@ -1,4 +1,5 @@
 from .map import MapModel
+from collections import deque
 
 
 class GameModel:
@@ -8,3 +9,4 @@ class GameModel:
 
     def __init__(self):
         self.map = MapModel()
+        self.actionQue = deque()
