@@ -1,9 +1,9 @@
 """
-Loot Tables Model [DiamondQuest]
+Coordinate [DiamondQuest]
 
-Generate loot for the different types of treasure block.
+Object representing a single coordinate pair.
 
-Author(s): Jacob Frazier, Jason C. McDonald
+Author(s): Elizabeth Larson, Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
@@ -40,51 +40,31 @@ Author(s): Jacob Frazier, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-import random
+from diamondquest.common.direction import Direction
 
-from diamondquest.common import loader
+class Coord:
 
+    def __init__(self, col, row):
+        self.col = col
+        self.row = row
 
-class LootTables:
-
-    tables = {
-        "artifact": loader.read_loot_table("artifact"),
-        "fossil": loader.read_loot_table("fossil"),
-        "mineral": loader.read_loot_table("mineral"),
-    }
-
-    @classmethod
-    def roll(cls, loot_table, amount, age, prefer=None):
-        """
-        Rolls a number of loot based on the table provided.
-        """
-
-        # Retrieve the desired loot table.
-        try:
-            table = cls.tables[loot_table]
-        except KeyError:
-            raise ValueError(f"No loot table {loot_table} exists.")
-
-        # List of collections with repeated elements for rolling
-        collections = []
-        # List of items with repeated elements for rolling
-        items = []
-
-        if prefer is None or random.randint(0, 3) == 0:
-            # Iterate over all collections that match the age passed
-            collections = [
-                [name] * val["frequency"]
-                for name, val in table.items()
-                if val["age"] == age
-            ]
-            collections = [item for col in collections for item in col]
-
-            # Iterate over a randomly selected collection
-            col = random.choice(collections)
-        else:
-            col = prefer
-
-        items = [[name] * val for name, val in table[col]["items"].items()]
-        items = [item for col in items for item in col]
-
-        return random.choice(items)
+    @staticmethod
+    def get_adjacent(self, direction):
+        if direction == Direction.HERE:
+            return Coord(self.col, self.row)
+        elif direction == Direction.BELOW:
+            return Coord(self.col, self.row + 1)
+        elif direction == Direction.BELOW_LEFT:
+            return Coord(self.col - 1, self.row + 1)
+        elif direction == Direction.LEFT:
+            return Coord(self.col - 1, self.row)
+        elif direction == Direction.ABOVE_LEFT:
+            return Coord(self.col - 1, self.row - 1)
+        elif direction == Direction.ABOVE:
+            return Coord(self.col, self.row - 1)
+        elif direction == Direction.ABOVE_RIGHT:
+            return Coord(self.col + 1, self.row - 1)
+        elif direction == Direction.RIGHT:
+            return Coord(self.col + 1, self.row)
+        elif direction == Direction.BELOW_RIGHT:
+            return Coord(self.col + 1, self.row + 1)

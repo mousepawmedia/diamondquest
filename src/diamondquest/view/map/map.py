@@ -7,7 +7,7 @@ Author(s): Harley Davis, Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
-# Copyright (c) <YEAR> MousePaw Media.
+# Copyright (c) 2020 MousePaw Media.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,7 @@ Author(s): Harley Davis, Jason C. McDonald
 import pygame
 
 from diamondquest.common import color
+from diamondquest.common.coord import Coord
 
 from diamondquest.model.map import MapModel, BlockType
 from diamondquest.view.window import Window, ViewType
@@ -70,11 +71,11 @@ class MapView:
             # Get MapModel update info
             updates = MapModel.get_updates()
 
-            for (x, y) in updates:
+            for coord in updates:
                 # Passing que into this as so far MapView is just
                 # functions, and unsure if que is something that needs
                 # be saved between calls.
-                MapView.redraw(x, y)
+                MapView.redraw(coord)
 
         # TODO: Render sprite next using separate functions
 
@@ -86,7 +87,7 @@ class MapView:
     # for types of changes. As sprite movement needs to include
     # starting location not just ending location.
     @classmethod
-    def redraw(cls, x, y, block):
+    def redraw(cls, coord, block):
         # Multiple keys pressed: queue system
         """Grabs next thing in the queue
         (x, y): specific block at x, y
@@ -94,30 +95,31 @@ class MapView:
         (-1, y): entire row at column y
         (-1, -1): whole map
         """
-        if x == -1 and y == -1:
+        if coord.col == -1 and coord.row == -1:
             # Redraw the entire map
             cls.redraw_map()
-        elif x != -1 and y == -1:
+        elif coord.col != -1 and coord.row == -1:
             # Redraw an entire column
-            cls.redraw_col(x)
+            cls.redraw_col(coord.row)
             pass
-        elif x == -1 and y != -1:
+        elif coord.col == -1 and coord.row != -1:
             # Redraw an entire row
-            cls.redraw_row(x)
+            cls.redraw_row(coord.col)
             pass
         else:
-            # Change specific block at x, y
-            MapView.draw_block(block, x, y)
+            # Change specific block
+            MapView.draw_block(block, coord)
 
         # TODO" Player movement redraw (offset for smooth movement)
         # Use percentage for offset (target pos +or- new pos * offset)
 
     @classmethod
-    def draw_block(cls, x, y):
+    def draw_block(cls, coord):
         """Draw a single block on the screen.
-        x - the x block position
+        x - the block column
+        y - the block row
         """
-        block = MapModel.get_block(x, y)
+        block = MapModel.get_block(coord)
 
         # Don't draw air/air blocks
         if block.type == BlockType.AIR and block.variant == BlockType.AIR:
@@ -125,11 +127,11 @@ class MapView:
 
         block_size = Window.get_block_height()
         block_surface = BlockTexture.load_texture(block.type, block.variant)
-        cls.view.surface.blit(block_surface, (x * block_size, y * block_size))
+        cls.view.surface.blit(block_surface, (coord.col * block_size, coord.row * block_size))  # TODO: Very broken!
 
     # where the anchor is, current state, x location, y location
     @classmethod
-    def redraw_avatar(cls, x, y):
+    def redraw_avatar(cls):
         """Redraws the avatar as they move"""
 
     @classmethod
@@ -153,7 +155,7 @@ class MapView:
         # TODO: Draw blocks in column
         # HACK
         for row in range(8):
-            cls.draw_block(col, row)
+            cls.draw_block(Coord(col, row))
 
     @classmethod
     def redraw_row(cls, row):

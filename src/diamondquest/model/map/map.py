@@ -7,7 +7,7 @@ Author(s): Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
-# Copyright (c) <YEAR> MousePaw Media.
+# Copyright (c) 2020 MousePaw Media.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,7 @@ Author(s): Jason C. McDonald
 import math
 
 from diamondquest.common import constants
+from diamondquest.common.coord import Coord
 from diamondquest.model.map import (
     Block,
     BlockType,
@@ -108,11 +109,28 @@ class MapModel:
             return cls.columns[col].get_section(row_top, row_bottom)
 
     @classmethod
-    def get_block(cls, col, row):
+    def get_block(cls, coord):
         try:
-            return cls.columns[col].get_block(row)
+            return cls.columns[coord.col].get_block(coord.row)
         except KeyError:
-            cls.columns[col] = MapColumn()
-            return cls.columns[col].get_block(row)
+            cls.columns[coord.col] = MapColumn()
+            return cls.columns[coord.col].get_block(coord.row)
 
-    # TODO: need to store player coordinates?
+    @classmethod
+    def get_locality(cls, coord):
+        return Locality(
+            here = cls.get_block(coord),
+            
+            below_left = cls.get_block(coord.get_adjacent(Direction.BELOW_LEFT)),
+            below = cls.get_block(coord.get_adjacent(Direction.BELOW)),
+            below_right = cls.get_block(coord.get_adjacent(Direction.BELOW_RIGHT)),
+            
+            left = cls.get_block(coord.get_adjacent(Direction.LEFT)),
+            
+            above_left = cls.get_block(coord.get_adjacent(Direction.ABOVE_LEFT)),
+            above = cls.get_block(coord.get_adjacent(Direction.ABOVE)),
+            above_right = cls.get_block(coord.get_adjacent(Direction.ABOVE_RIGHT)),
+
+            right = cls.get_block(coord.get_adjacent(Direction.RIGHT))
+        )
+

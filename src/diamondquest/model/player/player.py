@@ -1,9 +1,9 @@
 """
-Loot Tables Model [DiamondQuest]
+Player Model [DiamondQuest]
 
-Generate loot for the different types of treasure block.
+Stores current data about the player avatar.
 
-Author(s): Jacob Frazier, Jason C. McDonald
+Author(s): Elizabeth Larson, Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
@@ -40,51 +40,40 @@ Author(s): Jacob Frazier, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-import random
+from enum import Enum
 
-from diamondquest.common import loader
+from diamondquest.common import Direction
+from diamondquest.model.map import MapModel
+from diamondquest.model.player import ToolType
+from diamondquest.common.coord import Coord
 
+class PlayerAction(Enum):
+    HOOK_RIGHT = -3
+    HOOK_UP = -2
+    HOOK_LEFT = -1
+    STAND = 0
+    WALK = 1
+    CLIMB = 2
+    TOOL = 3
+    COFFEE = 0xC0FFEE
 
-class LootTables:
+class PlayerModel:
 
-    tables = {
-        "artifact": loader.read_loot_table("artifact"),
-        "fossil": loader.read_loot_table("fossil"),
-        "mineral": loader.read_loot_table("mineral"),
-    }
+    location = Coord(0, 0)
+    anchor = Coord(0, 0)
+    tool = None  # current tool
+    action = None  # current action/state
+    power = 0  # power level
 
     @classmethod
-    def roll(cls, loot_table, amount, age, prefer=None):
-        """
-        Rolls a number of loot based on the table provided.
-        """
+    def status(cls):
+        """This would be called by the View, and should return
+        all player data needed for rendering."""
+        # Get the locality using x, y
+        # TODO: What would we return?
 
-        # Retrieve the desired loot table.
-        try:
-            table = cls.tables[loot_table]
-        except KeyError:
-            raise ValueError(f"No loot table {loot_table} exists.")
-
-        # List of collections with repeated elements for rolling
-        collections = []
-        # List of items with repeated elements for rolling
-        items = []
-
-        if prefer is None or random.randint(0, 3) == 0:
-            # Iterate over all collections that match the age passed
-            collections = [
-                [name] * val["frequency"]
-                for name, val in table.items()
-                if val["age"] == age
-            ]
-            collections = [item for col in collections for item in col]
-
-            # Iterate over a randomly selected collection
-            col = random.choice(collections)
-        else:
-            col = prefer
-
-        items = [[name] * val for name, val in table[col]["items"].items()]
-        items = [item for col in items for item in col]
-
-        return random.choice(items)
+    @classmethod
+    def set_anchor(cls, direction):
+        locality = MapModel.get_locality(cls.location)
+        if locality.can_anchor(direction):
+            cls.anchor = Direction.relative_to(cls.col, cls.row, direction)

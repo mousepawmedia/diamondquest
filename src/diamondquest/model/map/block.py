@@ -7,7 +7,7 @@ Author(s): Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
-# Copyright (c) <YEAR> MousePaw Media.
+# Copyright (c) 2020 MousePaw Media.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ Author(s): Jason C. McDonald
 from enum import Enum
 import random
 
-from diamondquest.model.map.direction import Direction
+from diamondquest.common.direction import Direction
 
 
 class BlockType(Enum):

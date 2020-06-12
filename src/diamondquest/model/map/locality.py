@@ -7,7 +7,7 @@ Author(s): Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
-# Copyright (c) <YEAR> MousePaw Media.
+# Copyright (c) 2020 MousePaw Media.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ Author(s): Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from diamondquest.model.map.direction import Direction
+from diamondquest.common.direction import Direction
 
 
 class Locality:

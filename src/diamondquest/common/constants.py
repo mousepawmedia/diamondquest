@@ -5,7 +5,7 @@ Contants used elsewhere in the code.
 """
 
 # LICENSE (BSD-3-Clause)
-# Copyright (c) <YEAR> MousePaw Media.
+# Copyright (c) 2020 MousePaw Media.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
