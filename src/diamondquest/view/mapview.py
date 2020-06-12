@@ -43,9 +43,15 @@ Author(s): Jason C. McDonald
 import pygame
 from diamondquest.common.constants import TEXTURE_RES
 from diamondquest.common import loader
-from diamondquest.model.map import blocks
+from diamondquest.model.map import blocks, map
 from diamondquest.view.window import Window, Views
 
+# Temporary imports here...
+#from diamondquest.model.map.loot import LootTables
+from diamondquest.model.map.blocks import Block, BlockType, TreasureVariant
+from diamondquest.common.loader import load_texture
+from diamondquest.common.constants import TEXTURE_RES
+from collections import deque
 
 # TODO: Load images into data structure (i.e. Mineral.png, Stone.png)
 # TODO: Load character sprites (data structure as well?)
@@ -116,7 +122,27 @@ class BlockTexture():
 
 
 class MapView:
-    def redraw(x, y):
+
+    # Mostly works for updating blocks
+    # Would want to reconsider for character movement
+    # As you'll at least want starting block and ending block.
+    def update():
+        # Get MapModel update info
+        locations, que = map.MapModel.create_mock_update_info()
+        
+        
+        for (x, y) in locations: 
+            # Passing que into this as so far MapView is just
+            # functions, and unsure if que is something that needs
+            # be saved between calls. 
+            MapView.redraw(x, y, que)
+
+    # If this same function is going to handle
+    # sprite movement as well, might need to change
+    # x,y to be part of the que of changes, and have an enum
+    # for types of changes. As sprite movement needs to include
+    # starting location not just ending location.
+    def redraw(x, y, que):
         # Multiple keys pressed: queue system
         """Grabs next thing in the queue
         (x, y): specific block at x, y
@@ -135,7 +161,7 @@ class MapView:
             pass
         else:
             # Change specific block at x, y
-            pass
+            MapView.draw_block(que.popleft(), x, y)
         """Player movement redraw handled as well (offset for smooth movement)
         Use percentage for offset (target pos +or- new pos * offset)
         """
@@ -143,8 +169,12 @@ class MapView:
     def draw_block(block, x, y):
         """Draw a single block on the screen.
         x - the x block position
-        y - the y block position
         """
+        block_size = Window.get_block_height()
+        block = BlockTexture.load_texture(block.type, block.variant)
+        surf = pygame.display.get_surface()
+        surf.blit(block, (x*block_size, y*block_size))
+        pygame.display.flip()
 
     # where the anchor is, current state, x location, y location
     def redraw_avatar(x, y):
@@ -154,3 +184,5 @@ class MapView:
         """Walking off-screen:
         Miner walks off of the screen, whole screen shifts
         """
+
+

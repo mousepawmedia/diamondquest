@@ -40,6 +40,8 @@ Author(s): Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
+from collections import deque
+from diamondquest.model.map.blocks import Block, BlockType, TreasureVariant
 
 class MapModel:
     """
@@ -50,3 +52,17 @@ class MapModel:
 
         self.playerX = 0
         self.playerY = 0
+
+    # Need to be removed, just for testing.
+    # Creates a list of locations and a que of blocks
+    # To be drawn to the screen. 
+    def create_mock_update_info():
+        locations = [(0,0), (1, 0), (3, 0)]
+        
+        que = deque();
+        que.append(Block(BlockType.TREASURE, TreasureVariant.ARTIFACT))
+        que.append(Block(BlockType.STONE, 0))
+        que.append(Block(BlockType.TREASURE, TreasureVariant.ARTIFACT))
+
+
+        return locations, que

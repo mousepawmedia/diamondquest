@@ -70,8 +70,6 @@ def inputHandling():
             # Other items from above, tools, movement mode etc,
             # May not be needed if they aren't "repeatable"
 
-    # Dirty test to show actions queued correctly
-    print(keyboardQueue)
     return True
 
 
