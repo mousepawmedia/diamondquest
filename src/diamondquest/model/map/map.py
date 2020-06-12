@@ -40,29 +40,79 @@ Author(s): Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from collections import deque
-from diamondquest.model.map.blocks import Block, BlockType, TreasureVariant
+import math
 
-class MapModel:
-    """
-    The model for the Map
-    """
+from diamondquest.common import constants
+from diamondquest.model.map import (
+    Block,
+    BlockType,
+    MantleVariant,
+    TreasureVariant,
+    Decoration
+)
+
+
+class MapColumn:
+    """A single column in the map."""
 
     def __init__(self):
+        self.blocks = []
+        """Generates a new map column"""
+        # Two levels of sky
+        for _ in range(2):
+            self.blocks.append(Block(type=BlockType.AIR, variant=BlockType.AIR))
+        # One level of grass, optional decorations
+        self.blocks.append(Block(type=BlockType.GRASS))
+        # TODO: Add optional decoration
+        # One level of dirt
+        self.blocks.append(Block(type=BlockType.DIRT))
+        # Stone and treasure until 3 shy of bottom
+        for row in range(5, constants.BLOCK_MAX - 3):
+            self.blocks.append(Block.make_stone(math.ceil(row / 8)))
 
-        self.playerX = 0
-        self.playerY = 0
-
-    # Need to be removed, just for testing.
-    # Creates a list of locations and a que of blocks
-    # To be drawn to the screen. 
-    def create_mock_update_info():
-        locations = [(0,0), (1, 0), (3, 0)]
-        
-        que = deque();
-        que.append(Block(BlockType.TREASURE, TreasureVariant.ARTIFACT))
-        que.append(Block(BlockType.STONE, 0))
-        que.append(Block(BlockType.TREASURE, TreasureVariant.ARTIFACT))
+        self.blocks.append(Block(type=BlockType.MANTLE, variant=MantleVariant.UPPER))
+        self.blocks.append(Block(type=BlockType.MANTLE, variant=MantleVariant.MID))
+        self.blocks.append(Block(type=BlockType.MANTLE, variant=MantleVariant.LOWER))
 
 
-        return locations, que
+    def get_section(self, from_row, to_row):
+        """Retrieves the blocks in part of the column"""
+
+    def get_block(self, row):
+        """Returns a single block"""
+        return self.blocks[row]
+
+
+class MapModel:
+    """The model for the Map"""
+
+    columns = {}
+    updates = []
+
+    @classmethod
+    def get_updates(cls):
+        try:
+            # Provide the current updates list
+            return cls.updates
+        finally:
+            # After returning, clear the updates list
+            cls.updates = []
+
+
+    @classmethod
+    def get_column(cls, col, row_top, row_bottom):
+        try:
+            return cls.columns[col].get_section(row_top, row_bottom)
+        except KeyError:
+            cls.columns[col] = MapColumn()
+            return cls.columns[col].get_section(row_top, row_bottom)
+
+    @classmethod
+    def get_block(cls, col, row):
+        try:
+            return cls.columns[col].get_block(row)
+        except KeyError:
+            cls.columns[col] = MapColumn()
+            return cls.columns[col].get_block(row)
+
+    # TODO: need to store player coordinates?

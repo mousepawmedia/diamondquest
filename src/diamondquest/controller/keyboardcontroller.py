@@ -21,10 +21,10 @@ from collections import deque
 # mocking things up here.
 keyboardQueue = deque()
 
-''' 
+""" 
     Enqueues action events on keydown, deques on key up.
     Sure there is a cleaner way to handle the if statements.
-'''
+"""
 
 
 def inputHandling():

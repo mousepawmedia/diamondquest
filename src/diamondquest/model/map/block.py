@@ -41,6 +41,8 @@ Author(s): Jason C. McDonald
 # on how to contribute to our projects.
 
 from enum import Enum
+import random
+
 from diamondquest.model.map.direction import Direction
 
 
@@ -106,6 +108,22 @@ class Block:
         self.variant = variant
         self.decor = Decoration.NONE
         self.decor_offset = 0
+
+    @staticmethod
+    def make_stone(depth):
+        """Create a random stone or treasure block.
+        depth - an integer between 1 and 8; higher depth, more probability
+        """
+        # TODO: Improve this!
+        if random.randint(depth, 10) == 10:
+            variant = random.choice([
+                TreasureVariant.ARTIFACT,
+                TreasureVariant.FOSSIL,
+                TreasureVariant.MINERAL
+            ])
+            return Block(type=BlockType.TREASURE, variant=variant)
+        else:
+            return Block(type=BlockType.STONE)
 
     def add_decor(self, decor, offset=Direction.HERE):
         """Add a decor block to this block.

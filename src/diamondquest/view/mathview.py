@@ -23,4 +23,4 @@ def draw_puzzle(problem):
     # draw on surface
 
     surface.blit(rendered_problem, problem_display_area)
-    Window.redraw_window()
+    Window.redraw()

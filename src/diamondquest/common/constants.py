@@ -41,7 +41,14 @@ Contants used elsewhere in the code.
 # Framerate
 FPS = 16
 
+# The number of pixels in a single "block" in the source textures.
 TEXTURE_RES = 16
 
 # The number of blocks from top to bottom of screen
 BLOCK_COUNT = 8
+
+# Maximum number of blocks in a single map view
+BLOCK_MAX = BLOCK_COUNT * 8
+
+# The game title
+TITLE = "DiamondQuest 1.0"

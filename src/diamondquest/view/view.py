@@ -1,7 +1,7 @@
 """
-Data Loader [DiamondQuest]
+View [DiamondQuest]
 
-Load data and resource files.
+View is an abstraction around a surface, to facilitate caching.
 
 Author(s): Jason C. McDonald
 """
@@ -40,29 +40,18 @@ Author(s): Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from pathlib import Path
-import json
-
-import pygame
-
-resource_path = Path(__file__).resolve().parents[1] / "resources"
+from enum import Enum
 
 
-def read_json(path):
-    load_path = resource_path / path
-    data = dict()
-    with load_path.open("r") as file:
-        data = json.load(file)
-    return data
+class ViewType(Enum):
+    MAP = 1
+    MENU = 2
+    PUZZLE = 3
 
 
-def read_loot_table(table):
-    return read_json(f"loot/{table}.json")
+class View:
 
-
-def load_texture(texture, subfolder="textures"):
-    """Load texture from resource directory."""
-    # TODO: Cache this puppy!
-    load_path = resource_path / subfolder / f"{texture}.gif"
-    with load_path.open("rb") as img:
-        return pygame.image.load(img)
+    def __init__(self, surface, registration):
+        self.surface = surface
+        self.registration = registration
+        self.empty = True
