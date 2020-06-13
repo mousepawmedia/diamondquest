@@ -102,3 +102,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Since everyone keeps overriding this...
+.vscode/settings.json
