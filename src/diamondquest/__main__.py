@@ -7,6 +7,7 @@ from diamondquest.controller import keyboardcontroller
 from diamondquest.common.constants import FPS
 from diamondquest.view.map import MapView
 from diamondquest.view.puzzleview import PuzzleView
+from diamondquest.view.journal import JournalView
 
 # Temporary imports here...
 # from diamondquest.model.map.loot import LootTables
@@ -23,7 +24,7 @@ def terrible_test_code_function():
     # print(puzzlestring)
     # score = puzzleview.scorer(answer, score)
     # print(score)
-    
+
 
 def main():
     pygame.init()
@@ -45,6 +46,8 @@ def main():
         # System Tick - Update Model
         # View Tick - Update View
         MapView.update()
+
+        JournalView.update()  # HACK
 
 
 if __name__ == "__main__":

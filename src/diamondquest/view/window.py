@@ -3,7 +3,7 @@ Window [DiamondQuest]
 
 Handles the game window and caches primary surfaces.
 
-Author(s): Harley Davis, Jason C. McDonald
+Author(s): Harley Davis, Wilfrantz Dede, Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
@@ -51,11 +51,13 @@ from diamondquest.view import View, ViewType
 
 
 class Window:
-    shadowed = False
     resolution = (810, 610)  # NOTE: Change this back when done testing
 
     # contains cached versions of the surfaces
     view_cache = dict()
+
+    shadow_before = None
+    shadow = None  # The cached shadowed surface
 
     @classmethod
     def set_resolution(cls, width, height):
@@ -93,6 +95,8 @@ class Window:
         """Redraw the entire window."""
         main_surface = pygame.display.get_surface()
         for view in cls.view_cache.values():
+            if view.type == cls.shadow_before:
+                main_surface.blit(cls.shadow, (0, 0))
             main_surface.blit(view.surface, view.registration)
         pygame.display.flip()
 
@@ -109,7 +113,7 @@ class Window:
 
     @classmethod
     def get_puzzle_area(cls):
-        """Calculate the area for the puzzle/menu surface based on the
+        """Calculate the area for the puzzle surface based on the
         resolution. Guaranteed to have exactly 1/2 block padding around the
         edges."""
         width, height, x, y = cls.get_map_area()
@@ -122,6 +126,20 @@ class Window:
         return (width, height, x, y)
 
     @classmethod
+    def get_journal_area(cls):
+        """Calculate the area for the journal/menu surface based on the
+        resolution. Guaranteed to have exactly 1/2 block padding on top
+        and bottom, and a width of 5 block."""
+        map_width, height, x, y = cls.get_map_area()
+        block = cls.get_block_height()
+        width = block * 5
+        height -= block
+        x = (map_width - width) / 2
+        y += block / 2
+
+        return (width, height, x, y)
+
+    @classmethod
     def get_block_height(cls):
         """Return the height (and coincidentally, width) of a block at the
         current screen resolution. Guaranteed to be a multiple of 16.
@@ -130,11 +148,27 @@ class Window:
         return math.floor(map_height / constants.BLOCK_COUNT)
 
     @classmethod
-    def draw_shadow(cls):
-        """Draw a semi-transparent box over the map screen.
-        If already shadowed, this does nothing."""
-        # TODO: Copy map surface
-        # TODO: Draw to screen
+    def _draw_shadow(cls):
+        """Return a shadowed version of whole window."""
+        if cls.shadow is None:
+            width, height, x, y = cls.get_map_area()
+            tint = pygame.Surface((width, height))
+            tint.fill(color.BLACK)
+            tint.set_alpha(200)
+            cls.shadow = pygame.display.get_surface().copy()
+            cls.shadow.blit(tint, (x, y))
+
+    @classmethod
+    def add_shadow_before(cls, view):
+        """Add the shadow before (under) one of the views"""
+        cls._draw_shadow()
+        cls.shadow_before = view
+
+    @classmethod
+    def remove_shadow(cls):
+        """Removes the shadow."""
+        cls.shadow = None
+        cls.shadow_before = None
 
     @classmethod
     def get_view(cls, view):
@@ -156,6 +190,6 @@ class Window:
             width, height, x, y = cls.get_map_area()
         elif view == ViewType.PUZZLE:
             width, height, x, y = cls.get_puzzle_area()
-        elif view == ViewType.MENU:
-            width, height, x, y = cls.get_puzzle_area()
-        return View(pygame.Surface((width, height)), (x, y))
+        elif view == ViewType.JOURNAL:
+            width, height, x, y = cls.get_journal_area()
+        return View(view, pygame.Surface((width, height)), (x, y))

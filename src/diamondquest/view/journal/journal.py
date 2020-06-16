@@ -1,9 +1,9 @@
 """
-View [DiamondQuest]
+Journal [DiamondQuest]
 
-View is an abstraction around a surface, to facilitate caching.
+The view for the Miner's Journal and Menu.
 
-Author(s): Jason C. McDonald
+Author(s): Wilfrantz Dede, Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
@@ -40,19 +40,18 @@ Author(s): Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from enum import Enum
+from diamondquest.common import color
+from diamondquest.view.window import Window, ViewType
 
 
-class ViewType(Enum):
-    MAP = 1
-    PUZZLE = 2
-    JOURNAL = 3
+class JournalView:
 
+    @classmethod
+    def update(cls):
+        cls.view = Window.get_view(ViewType.JOURNAL)
+        Window.add_shadow_before(ViewType.JOURNAL)  # TEMPORARY ONLY!
+        cls.view.surface.fill(color.WHITE)
 
-class View:
-
-    def __init__(self, type, surface, registration):
-        self.type = type
-        self.surface = surface
-        self.registration = registration
-        self.empty = True
+    @classmethod
+    def redraw(cls):
+        """Render the view to the screen."""
