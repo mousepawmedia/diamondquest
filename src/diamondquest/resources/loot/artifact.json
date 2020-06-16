@@ -1,5 +1,7 @@
 {
     "laundry_junk": {
+        "name": "Laundry Junk",
+        "achievement": "Laundry Day",
         "frequency": 5,
         "age": 1,
         "items": {
@@ -9,17 +11,85 @@
             "lost_sock": 1
         }
     },
+    "kitchen_junk": {
+        "name": "Kitchen Junk",
+        "achievement": "Now We're Cooking",
+        "frequency": 5,
+        "age": 1,
+        "items": {
+            "spoon": 6,
+            "fork": 6,
+            "mug": 4,
+            "plate": 3,
+            "frying_pan": 2,
+            "kitchen_sink": 1
+        }
+    },
     "lookit_what_i_found": {
+        "name": "Random Junk",
+        "achievement": "Junk Collector",
         "frequency": 5,
         "age": 1,
         "items": {
             "weird_rock": 8,
             "nail": 4,
             "bone": 3,
-            "spoon": 3,
-            "fork": 3,
             "old_penny": 2,
             "old_key": 2
-        }   
+        }
+    },
+    "egyptian": {
+        "name": "Egyptian Artifacts",
+        "achievement": "Egyptologist",
+        "frequency": 2,
+        "age": 7,
+        "items": {
+            "microlith": 3,
+            "scarab": 3,
+            "menat": 2,
+            "saqqara": 1,
+            "shabti": 1
+        }
+    },
+    "anasazi": {
+        "name": "Anasazi Artifacts",
+        "frequency": 2,
+        "age": 7,
+        "items": {
+            "potshard": 7,
+            "arrowhead": 6,
+            "ladle": 3,
+            "pot": 2,
+            "jug": 2
+        }
+    },
+    "stone_age": {
+        // https://humanorigins.si.edu/evidence/behavior/stone-tools
+        "name": "Stone Age Artifacts",
+        "achievement": "So Retro",
+        "frequency": 2,
+        "age": 8,
+        "items": {
+            "burin": 3,
+            "bone_needle": 3,
+            "awl": 2,
+            "arrowhead": 2,
+            "hammerstone": 1,
+            "handaxe": 1
+        }
+    },
+    "mesopotamian": {
+        // https://oi.uchicago.edu/collections/highlights/highlights-collection-mesopotamia
+        "name": "Mesopotamian Artifacts",
+        "frequency": 1,
+        "age": 8,
+        "items": {
+            "weights": 3,
+            "gazelle_stamp": 3,
+            "cylinder_seal": 3,
+            "plaque": 2,
+            "clay_tablet": 2,
+            "pot": 1
+        }
     }
 }

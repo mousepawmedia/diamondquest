@@ -1,1 +1,59 @@
-{}
+{
+    "common_igneous": {
+        "name": "Common Igneous Rocks",
+        "achievement": "Taken For Granite",
+        "frequency": 5,
+        "age": 1,
+        "items": {
+            "granite": 2,
+            "diorite": 2,
+            "dacite": 2,
+            "basalt": 2,
+            "scoria": 2,
+            "pumice": 1,
+            "obsidian": 1
+        }
+    },
+    "common_sedimentary": {
+        "name": "Common Sedimentary Rocks",
+        "achievement": "Shale We Dance?",
+        "frequency": 5,
+        "age": 1,
+        "items": {
+            "breccia": 2,
+            "sandstone": 2,
+            "siltstone": 2,
+            "shale": 2,
+            "limestone": 2,
+            "chert": 2,
+            "coal": 1,
+        }
+    },
+    "common_metamorphic": {
+        "name": "Common Metamorphic Rocks",
+        "achievement": "Gneiss Work!",
+        "frequency": 5,
+        "age": 1,
+        "items": {
+            "slate": 2,
+            "phyllite": 2,
+            "schist": 2,
+            "gneiss": 2,
+            "marble": 1,
+            "quartzite": 1
+        }
+    },
+    "obsidian": {
+        "name": "Rare Obsidian",
+        "frequency": 5,
+        "age": 4,
+        "items": {
+            "snowflake": 3,
+            "starry_night": 3,
+            "spiderweb": 3,
+            "purple_sheen": 1
+        }
+    },
+}
+
+// Halitite is cool!
