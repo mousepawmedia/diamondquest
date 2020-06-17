@@ -64,11 +64,11 @@
         }
     },
     "stone_age": {
-        // https://humanorigins.si.edu/evidence/behavior/stone-tools
         "name": "Stone Age Artifacts",
         "achievement": "So Retro",
         "frequency": 2,
         "age": 8,
+        "_reference": "https://humanorigins.si.edu/evidence/behavior/stone-tools",
         "items": {
             "burin": 3,
             "bone_needle": 3,
@@ -79,10 +79,10 @@
         }
     },
     "mesopotamian": {
-        // https://oi.uchicago.edu/collections/highlights/highlights-collection-mesopotamia
         "name": "Mesopotamian Artifacts",
         "frequency": 1,
         "age": 8,
+        "_reference": "https://oi.uchicago.edu/collections/highlights/highlights-collection-mesopotamia",
         "items": {
             "weights": 3,
             "gazelle_stamp": 3,

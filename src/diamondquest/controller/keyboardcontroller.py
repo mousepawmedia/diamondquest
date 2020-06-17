@@ -11,7 +11,7 @@ from diamondquest.model.game import GameModel
 
 from collections import deque
 
-""" 
+"""
     Enqueues action events on keydown, deques on key up.
     Sure there is a cleaner way to handle the if statements.
 """
@@ -40,9 +40,9 @@ def inputHandling():
         # Other items from above, tools, movement mode etc,
         # May not be needed if they aren't "repeatable"
 
-        print(actionQue)
+        #print(actionQue)
 
- 
+
     return True
 
 

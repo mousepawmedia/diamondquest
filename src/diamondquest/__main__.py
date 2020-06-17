@@ -36,11 +36,15 @@ def main():
     # model = GameModel()
     window = Window()
     window.draw()
-    
+
     GameModel.on_start()
     MapView.update()
     window.show_view(ModeType.MAP)
     window.show_view(ModeType.MENU)
+
+    print("1 to hide initial menu")
+    print("Esc to toggle menu")
+    print("J to toggle Journal")
 
 
     running = True
@@ -51,7 +55,7 @@ def main():
 
         # Controller Tick - Handle Input
         running = keyboardcontroller.inputHandling()
-        
+
         if ( running ):
             # System Tick - Update Model
             update_controllers()

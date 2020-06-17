@@ -7,7 +7,7 @@ from random import randint
 """ Deals with MathView
 """
 # window.draw_shadow()
-# TODO: 
+# TODO:
 
 class PuzzleView:
 
@@ -83,7 +83,7 @@ class PuzzleView:
             answer = reduce((lambda x, y: x * y), listofNumbers)
             return listofNumbers, answer, '*'
         elif (powerlevel==4):
-            answer = reduce((lambda x, y: x / y), listofNumbers) 
+            answer = reduce((lambda x, y: x / y), listofNumbers)
             return listofNumbers, answer, '/'
         elif (powerlevel==5):
             pass
@@ -124,7 +124,7 @@ class PuzzleView:
             puzzleString = "*".join(listofString)
         elif operator == '/':
             puzzleString = "/".join(listofString)
-        
+
         # implement scorer
         return puzzleString, answer
 
@@ -140,13 +140,13 @@ class PuzzleView:
             # level or points increase
             pass
         elif check_answer == False:
-            score = score 
+            score = score
             # level stays same points stay same
             pass
         return score
 
     def answer_check (self,userresponse, correctanswer):
-        # Returns a bool 
+        # Returns a bool
         # Increase level for true
         # Display Incorrect for false
         if userresponse == correctanswer:

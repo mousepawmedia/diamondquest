@@ -26,7 +26,7 @@
             "shale": 2,
             "limestone": 2,
             "chert": 2,
-            "coal": 1,
+            "coal": 1
         }
     },
     "common_metamorphic": {
@@ -54,6 +54,12 @@
             "purple_sheen": 1
         }
     },
+    "igneous_gems": {
+        "name": "Obsidian Gems",
+        "frequency": 5,
+        "age": 4,
+        "items": {
+            "halite": 3
+        }
+    }
 }
-
-// Halitite is cool!
