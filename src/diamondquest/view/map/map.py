@@ -42,18 +42,11 @@ Author(s): Harley Davis, Jason C. McDonald
 
 import pygame
 
-from diamondquest.common import color
-from diamondquest.common.coord import Coord
-
-from diamondquest.model.map import MapModel, BlockType
+from diamondquest.common.coord import Coord, Depth
+from diamondquest.model.map import MapModel
 from diamondquest.view.window import Window
 from diamondquest.common.mode import ModeType
 from diamondquest.view.map import BlockTexture
-
-# TODO: Load images into data structure (i.e. Mineral.png, Stone.png)
-# TODO: Load character sprites (data structure as well?)
-# TODO: Account for window resizing (rescaling the map to adapt)
-# TODO: Queue function (e.g. spot (x,y) has changed, put in the queue -> see redraw())
 
 
 class MapView:
@@ -120,17 +113,14 @@ class MapView:
         x - the block column
         y - the block row
         """
-        block = MapModel.get_block(coord)
+        block, _ = MapModel.get_block(coord)
 
-        # Don't draw air/air blocks
-        if block.type == BlockType.AIR and block.variant == BlockType.AIR:
-            return
-
-        block_size = Window.get_block_height()
+        block_size = Window.res.block_height
         block_surface = BlockTexture.load_texture(block.type, block.variant)
-        cls.view.surface.blit(block_surface, (coord.col * block_size, coord.row * block_size))  # TODO: Very broken!
+        cls.view.surface.blit(
+            block_surface, (coord.col * block_size, coord.row * block_size)
+        )  # TODO: Very broken!
 
-    # where the anchor is, current state, x location, y location
     @classmethod
     def redraw_avatar(cls):
         """Redraws the avatar as they move"""
@@ -140,28 +130,20 @@ class MapView:
         """Walking off-screen:
         Miner walks off of the screen, whole screen shifts
         """
-        cls.view.surface.fill(color.SKY)
-
-        # HACK
-        for i in range(8):
-            cls.redraw_col(i)
+        for col in range(Window.res.blocks_across):
+            cls.redraw_col(col)
 
     @classmethod
     def redraw_col(cls, col):
         """Redraw all blocks in column
         col - the column to redraw
         """
-        # TODO: Fill rectangle
-
-        # TODO: Draw blocks in column
-        # HACK
-        for row in range(8):
-            cls.draw_block(Coord(col, row))
+        for block, coord in MapModel.get_column(col, Depth(1)):
+            cls.draw_block(coord)
 
     @classmethod
     def redraw_row(cls, row):
         """Redraw all blocks in row
         row - the row to redraw
         """
-        # TODO: Fill rectangle
         # TODO: Draw blocks in row

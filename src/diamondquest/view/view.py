@@ -41,9 +41,7 @@ Author(s): Jason C. McDonald
 # on how to contribute to our projects.
 
 
-
 class View:
-
     def __init__(self, type, surface, registration):
         self.type = type
         self.surface = surface

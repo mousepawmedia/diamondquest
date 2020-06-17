@@ -42,8 +42,8 @@ Author(s): Elizabeth Larson, Jason C. McDonald
 
 from diamondquest.common.direction import Direction
 
-class Coord:
 
+class Coord:
     def __init__(self, col, row):
         self.col = col
         self.row = row
@@ -68,3 +68,21 @@ class Coord:
             return Coord(self.col + 1, self.row)
         elif direction == Direction.BELOW_RIGHT:
             return Coord(self.col + 1, self.row + 1)
+
+
+class Depth:
+
+    HEIGHT = 8
+
+    def __init__(self, depth):
+        self.depth = depth
+        self.top_x = (depth - 1) * self.HEIGHT
+        self.bottom_x = ((depth) * self.HEIGHT) - 1
+
+    @property
+    def row_range(self):
+        """Return the upper and lower row coordinates for the depth."""
+        return (self.top_x, self.bottom_x)
+
+    def __iter__(self):
+        return iter(range(self.top_x, self.bottom_x + 1))

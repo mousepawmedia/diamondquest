@@ -116,11 +116,13 @@ class Block:
         """
         # TODO: Improve this!
         if random.randint(depth, 10) == 10:
-            variant = random.choice([
-                TreasureVariant.ARTIFACT,
-                TreasureVariant.FOSSIL,
-                TreasureVariant.MINERAL
-            ])
+            variant = random.choice(
+                [
+                    TreasureVariant.ARTIFACT,
+                    TreasureVariant.FOSSIL,
+                    TreasureVariant.MINERAL,
+                ]
+            )
             return Block(type=BlockType.TREASURE, variant=variant)
         else:
             return Block(type=BlockType.STONE)

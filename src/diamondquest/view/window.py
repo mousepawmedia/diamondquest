@@ -40,19 +40,18 @@ Author(s): Harley Davis, Wilfrantz Dede, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-import math
-
 import pygame
 
 from diamondquest.common import color
 from diamondquest.common import constants
+from diamondquest.common import Resolution
 
 from diamondquest.view import View
 from diamondquest.common.mode import ModeType
 
 
 class Window:
-    resolution = (810, 610)  # NOTE: Change this back when done testing
+    res = Resolution(810, 610)  # NOTE: Change this back when done testing
 
     # contains cached versions of the surfaces
     view_cache = dict()
@@ -61,16 +60,15 @@ class Window:
     shadow = None  # The cached shadowed surface
 
     @classmethod
-    def set_resolution(cls, width, height):
+    def resize(cls, resolution):
         """Redraw the window with a new resolution.
         width - the new window width
         height - the new window height
         """
-        cls.resolution = (width, height)
+        cls.res = resolution
         # Clear the cached surfaces, which will need to be
         # recreated for the new window size.
         cls.clear_cache()
-
         cls.draw()
 
     @classmethod
@@ -80,7 +78,7 @@ class Window:
     @classmethod
     def draw(cls):
         """Draw the screen from scratch."""
-        screen = pygame.display.set_mode(cls.resolution)
+        screen = pygame.display.set_mode(cls.res.resolution)
 
         # Write the caption to the screen.
         pygame.display.set_caption(constants.TITLE)
@@ -94,67 +92,27 @@ class Window:
     @classmethod
     def update(cls):
         """Redraw the entire window."""
+        # TODO: This is getting convoluted; refactor
+
         main_surface = pygame.display.get_surface()
-        for view in cls.view_cache.values():
-            if view.visible:
-                if view.type == cls.shadow_before:
-                    main_surface.blit(cls.shadow, (0, 0))
+        for mode in ModeType.render_order():
+            try:
+                view = cls.view_cache[mode]
+                if view.visible:
+                    if view.type == cls.shadow_before:
+                        main_surface.blit(cls.shadow, (0, 0))
 
-                main_surface.blit(view.surface, view.registration)
+                    main_surface.blit(view.surface, view.registration)
+            except KeyError:
+                continue
+
         pygame.display.flip()
-
-    @classmethod
-    def get_map_area(cls):
-        """Calculate the area for the map surface based on the resolution.
-        Each dimension is guaranteed to be a multiple of 16.
-        """
-        width = 16 * math.floor(cls.resolution[0] / 16)
-        height = 16 * math.floor(cls.resolution[1] / 16)
-        x = (cls.resolution[0] - width) / 2
-        y = (cls.resolution[1] - height) / 2
-        return (width, height, x, y)
-
-    @classmethod
-    def get_puzzle_area(cls):
-        """Calculate the area for the puzzle surface based on the
-        resolution. Guaranteed to have exactly 1/2 block padding around the
-        edges."""
-        width, height, x, y = cls.get_map_area()
-        less = cls.get_block_height()
-        width -= less
-        height -= less
-        x += less / 2
-        y += less / 2
-
-        return (width, height, x, y)
-
-    @classmethod
-    def get_journal_area(cls):
-        """Calculate the area for the journal/menu surface based on the
-        resolution. Guaranteed to have exactly 1/2 block padding on top
-        and bottom, and a width of 5 block."""
-        map_width, height, x, y = cls.get_map_area()
-        block = cls.get_block_height()
-        width = block * 5
-        height -= block
-        x = (map_width - width) / 2
-        y += block / 2
-
-        return (width, height, x, y)
-
-    @classmethod
-    def get_block_height(cls):
-        """Return the height (and coincidentally, width) of a block at the
-        current screen resolution. Guaranteed to be a multiple of 16.
-        """
-        map_height = cls.get_map_area()[1]
-        return math.floor(map_height / constants.BLOCK_COUNT)
 
     @classmethod
     def _draw_shadow(cls):
         """Return a shadowed version of whole window."""
         if cls.shadow is None:
-            width, height, x, y = cls.get_map_area()
+            width, height, x, y = cls.res.map_area
             tint = pygame.Surface((width, height))
             tint.fill(color.BLACK)
             tint.set_alpha(200)
@@ -162,8 +120,8 @@ class Window:
             cls.shadow.blit(tint, (x, y))
 
     @classmethod
-    def add_shadow_before(cls, view):
-        """Add the shadow before (under) one of the views"""
+    def add_shadow_under(cls, view):
+        """Add the shadow under one of the views"""
         cls._draw_shadow()
         cls.shadow_before = view
 
@@ -175,14 +133,14 @@ class Window:
 
     @classmethod
     def show_view(cls, view):
-        if ( not view in cls.view_cache ):
+        if not view in cls.view_cache:
             cls.view_cache[view] = cls._create_view(view)
 
         cls.view_cache[view].visible = True
 
     @classmethod
     def hide_view(cls, view):
-        if ( not view in cls.view_cache ):
+        if not view in cls.view_cache:
             cls.view_cache[view] = cls._create_view(view)
 
         cls.view_cache[view].visible = False
@@ -204,11 +162,11 @@ class Window:
         view - the purpose of the surface
         """
         if view == ModeType.MAP:
-            width, height, x, y = cls.get_map_area()
-        elif View == ModeType.PUZZLE:
-            width, height, x, y = cls.get_puzzle_area()
+            width, height, x, y = cls.res.map_area
+        elif view == ModeType.PUZZLE:
+            width, height, x, y = cls.res.puzzle_area
         elif view == ModeType.JOURNAL:
-            width, height, x, y = cls.get_journal_area()
+            width, height, x, y = cls.res.journal_area
         elif view == ModeType.MENU:
-            width, height, x, y = cls.get_journal_area()
+            width, height, x, y = cls.res.journal_area
         return View(view, pygame.Surface((width, height)), (x, y))

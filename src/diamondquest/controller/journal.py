@@ -1,9 +1,9 @@
 """
-Player Model [DiamondQuest]
+JournalController [DiamondQuest]
 
-Stores current data about the player avatar.
+Controller for Journal.
 
-Author(s): Elizabeth Larson, Jason C. McDonald
+Author(s): Harley Davis, Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
@@ -40,42 +40,33 @@ Author(s): Elizabeth Larson, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from enum import Enum
+import pygame.locals as KEYS
 
-from diamondquest.common import Direction
-from diamondquest.model.map import MapModel
-from diamondquest.model.player import ToolType
-from diamondquest.common.coord import Coord
-
-
-class PlayerAction(Enum):
-    HOOK_RIGHT = -3
-    HOOK_UP = -2
-    HOOK_LEFT = -1
-    STAND = 0
-    WALK = 1
-    CLIMB = 2
-    TOOL = 3
-    COFFEE = 0xC0FFEE
+from diamondquest.controller import KeyboardController
+from diamondquest.model.game import GameModel
+from diamondquest.common.mode import ModeType
+from diamondquest.view.window import Window
 
 
-class PlayerModel:
+class JournalController:
+    @staticmethod
+    def process_action():
+        if GameModel.mode == ModeType.JOURNAL:
+            if KeyboardController.pending():
+                action = KeyboardController.grab()
 
-    location = Coord(0, 0)
-    anchor = Coord(0, 0)
-    tool = None  # current tool
-    action = None  # current action/state
-    power = 0  # power level
+                # Resume Game
+                if action == KEYS.K_j:
+                    GameModel.mode = ModeType.MAP
+                    Window.hide_view(ModeType.JOURNAL)
 
-    @classmethod
-    def status(cls):
-        """This would be called by the View, and should return
-        all player data needed for rendering."""
-        # Get the locality using x, y
-        # TODO: What would we return?
-
-    @classmethod
-    def set_anchor(cls, direction):
-        locality = MapModel.get_locality(cls.location)
-        if locality.can_anchor(direction):
-            cls.anchor = Direction.relative_to(cls.col, cls.row, direction)
+                # Handling arrows here
+                # They are put back in front in case arrows are held down
+                elif action == KEYS.K_UP:
+                    KeyboardController.restore(action)
+                elif action == KEYS.K_DOWN:
+                    KeyboardController.restore(action)
+                elif action == KEYS.K_LEFT:
+                    KeyboardController.restore(action)
+                elif action == KEYS.K_RIGHT:
+                    KeyboardController.restore(action)

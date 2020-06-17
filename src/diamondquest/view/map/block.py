@@ -1,6 +1,7 @@
 import pygame
 
 from diamondquest.common.constants import TEXTURE_RES
+from diamondquest.common import color
 from diamondquest.common import loader
 from diamondquest.model.map import (
     BlockType,
@@ -58,11 +59,16 @@ class BlockTexture:
             blockset = loader.load_texture("blockset")
 
             texture = pygame.Surface((TEXTURE_RES, TEXTURE_RES))
-            texture.blit(
-                blockset, (0, 0), BlockTexture.texture_location(block, variant)
-            )
+            if block == BlockType.AIR and variant == BlockType.AIR:
+                texture.fill(color.SKY)
+            else:
+                texture.blit(
+                    blockset,
+                    (0, 0),
+                    BlockTexture.texture_location(block, variant),
+                )
 
-            bh = Window.get_block_height()
+            bh = Window.res.block_height
             texture = pygame.transform.scale(texture, (bh, bh))
 
             cls.cache[(block, variant)] = texture

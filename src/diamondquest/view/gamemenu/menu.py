@@ -53,13 +53,13 @@ from diamondquest.common import color
 from diamondquest.view.window import Window
 from diamondquest.common.mode import ModeType
 
+
 class MenuView:
-    
     @classmethod
     def update(cls):
         cls.view = Window.get_view(ModeType.MENU)
-        Window.add_shadow_before(ModeType.MENU)  # TEMPORARY ONLY!
-        cls.view.surface.fill(color.BLACK)
+        Window.add_shadow_under(ModeType.MENU)  # TEMPORARY ONLY!
+        cls.view.surface.fill(color.WOOD)
 
     @classmethod
     def redraw(cls):

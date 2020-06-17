@@ -46,11 +46,10 @@ from diamondquest.common.mode import ModeType
 
 
 class JournalView:
-
     @classmethod
     def update(cls):
         cls.view = Window.get_view(ModeType.JOURNAL)
-        Window.add_shadow_before(ModeType.JOURNAL)  # TEMPORARY ONLY!
+        Window.add_shadow_under(ModeType.JOURNAL)  # TEMPORARY ONLY!
         cls.view.surface.fill(color.WHITE)
 
     @classmethod

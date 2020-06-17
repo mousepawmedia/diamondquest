@@ -43,13 +43,13 @@ Author(s): Jason C. McDonald
 import math
 
 from diamondquest.common import constants
-from diamondquest.common.coord import Coord
+from diamondquest.common.coord import Coord, Depth
 from diamondquest.model.map import (
     Block,
     BlockType,
     MantleVariant,
     TreasureVariant,
-    Decoration
+    Decoration,
 )
 
 
@@ -71,13 +71,19 @@ class MapColumn:
         for row in range(5, constants.BLOCK_MAX - 3):
             self.blocks.append(Block.make_stone(math.ceil(row / 8)))
 
-        self.blocks.append(Block(type=BlockType.MANTLE, variant=MantleVariant.UPPER))
-        self.blocks.append(Block(type=BlockType.MANTLE, variant=MantleVariant.MID))
-        self.blocks.append(Block(type=BlockType.MANTLE, variant=MantleVariant.LOWER))
+        self.blocks.append(
+            Block(type=BlockType.MANTLE, variant=MantleVariant.UPPER)
+        )
+        self.blocks.append(
+            Block(type=BlockType.MANTLE, variant=MantleVariant.MID)
+        )
+        self.blocks.append(
+            Block(type=BlockType.MANTLE, variant=MantleVariant.LOWER)
+        )
 
-
-    def get_section(self, from_row, to_row):
+    def get_section(self, depth):
         """Retrieves the blocks in part of the column"""
+        return [self.blocks[row] for row in depth]
 
     def get_block(self, row):
         """Returns a single block"""
@@ -99,38 +105,50 @@ class MapModel:
             # After returning, clear the updates list
             cls.updates = []
 
+    @classmethod
+    def passive_get_block(cls, coord):
+        """Get block at coordinate, but return None if not yet generated.
+        Does not attempt to generate missing blocks or columns."""
+        try:
+            return cls.columns[coord.col].get_block(coord.row)
+        except KeyError:
+            return None
 
     @classmethod
-    def get_column(cls, col, row_top, row_bottom):
+    def get_column(cls, col, depth):
         try:
-            return cls.columns[col].get_section(row_top, row_bottom)
+            column = cls.columns[col]
         except KeyError:
-            cls.columns[col] = MapColumn()
-            return cls.columns[col].get_section(row_top, row_bottom)
+            column = cls.columns[col] = MapColumn()
+        finally:
+            return [
+                (block, Coord(col, row))
+                for block, row in zip(column.get_section(depth), depth)
+            ]
 
     @classmethod
     def get_block(cls, coord):
         try:
-            return cls.columns[coord.col].get_block(coord.row)
+            block = cls.columns[coord.col].get_block(coord.row)
         except KeyError:
-            cls.columns[coord.col] = MapColumn()
-            return cls.columns[coord.col].get_block(coord.row)
+            block = cls.columns[coord.col] = MapColumn()
+        finally:
+            return (block, coord)
 
     @classmethod
     def get_locality(cls, coord):
         return Locality(
-            here = cls.get_block(coord),
-            
-            below_left = cls.get_block(coord.get_adjacent(Direction.BELOW_LEFT)),
-            below = cls.get_block(coord.get_adjacent(Direction.BELOW)),
-            below_right = cls.get_block(coord.get_adjacent(Direction.BELOW_RIGHT)),
-            
-            left = cls.get_block(coord.get_adjacent(Direction.LEFT)),
-            
-            above_left = cls.get_block(coord.get_adjacent(Direction.ABOVE_LEFT)),
-            above = cls.get_block(coord.get_adjacent(Direction.ABOVE)),
-            above_right = cls.get_block(coord.get_adjacent(Direction.ABOVE_RIGHT)),
-
-            right = cls.get_block(coord.get_adjacent(Direction.RIGHT))
+            here=cls.get_block(coord),
+            below_left=cls.get_block(coord.get_adjacent(Direction.BELOW_LEFT)),
+            below=cls.get_block(coord.get_adjacent(Direction.BELOW)),
+            below_right=cls.get_block(
+                coord.get_adjacent(Direction.BELOW_RIGHT)
+            ),
+            left=cls.get_block(coord.get_adjacent(Direction.LEFT)),
+            above_left=cls.get_block(coord.get_adjacent(Direction.ABOVE_LEFT)),
+            above=cls.get_block(coord.get_adjacent(Direction.ABOVE)),
+            above_right=cls.get_block(
+                coord.get_adjacent(Direction.ABOVE_RIGHT)
+            ),
+            right=cls.get_block(coord.get_adjacent(Direction.RIGHT)),
         )
-

@@ -3,15 +3,21 @@ import pygame
 from pygame.locals import *
 
 from diamondquest.view.window import Window
-from diamondquest.controller import keyboardcontroller, menucontroller
-from diamondquest.controller import mapcontroller, journalcontroller
+from diamondquest.controller import (
+    KeyboardController,
+    MenuController,
+    MapController,
+    JournalController,
+)
+
 from diamondquest.common.constants import FPS
 from diamondquest.view.map import MapView
-from diamondquest.view.puzzleview import PuzzleView
+from diamondquest.view.puzzle import PuzzleView
 from diamondquest.view.journal import JournalView
 from diamondquest.view.gamemenu import MenuView
 from diamondquest.model.game import GameModel
 from diamondquest.common.mode import ModeType
+
 # Temporary imports here...
 # from diamondquest.model.map.loot import LootTables
 
@@ -46,7 +52,6 @@ def main():
     print("Esc to toggle menu")
     print("J to toggle Journal")
 
-
     running = True
     while running:
         # Keep the loop running at roughly 16 FPS.
@@ -54,24 +59,27 @@ def main():
         clock.tick(FPS)
 
         # Controller Tick - Handle Input
-        running = keyboardcontroller.inputHandling()
+        running = KeyboardController.handle_input()
 
-        if ( running ):
+        if running:
             # System Tick - Update Model
             update_controllers()
             # View Tick - Update View
             update_views()
 
-def update_controllers():
-    menucontroller.processAction()
-    mapcontroller.processAction()
-    journalcontroller.processAction()
 
-#Called the right update_view depending on state.
+def update_controllers():
+    MenuController.process_action()
+    MapController.process_action()
+    JournalController.process_action()
+
+
+# Called the right update_view depending on state.
 def update_views():
     MapView.update()
     MenuView.update()
     JournalView.update()
+
 
 if __name__ == "__main__":
     main()
