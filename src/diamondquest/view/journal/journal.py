@@ -41,15 +41,16 @@ Author(s): Wilfrantz Dede, Jason C. McDonald
 # on how to contribute to our projects.
 
 from diamondquest.common import color
-from diamondquest.view.window import Window, ViewType
+from diamondquest.view.window import Window
+from diamondquest.common.mode import ModeType
 
 
 class JournalView:
 
     @classmethod
     def update(cls):
-        cls.view = Window.get_view(ViewType.JOURNAL)
-        Window.add_shadow_before(ViewType.JOURNAL)  # TEMPORARY ONLY!
+        cls.view = Window.get_view(ModeType.JOURNAL)
+        Window.add_shadow_before(ModeType.JOURNAL)  # TEMPORARY ONLY!
         cls.view.surface.fill(color.WHITE)
 
     @classmethod

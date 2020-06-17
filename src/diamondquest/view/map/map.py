@@ -46,7 +46,8 @@ from diamondquest.common import color
 from diamondquest.common.coord import Coord
 
 from diamondquest.model.map import MapModel, BlockType
-from diamondquest.view.window import Window, ViewType
+from diamondquest.view.window import Window
+from diamondquest.common.mode import ModeType
 from diamondquest.view.map import BlockTexture
 
 # TODO: Load images into data structure (i.e. Mineral.png, Stone.png)
@@ -63,7 +64,7 @@ class MapView:
     @classmethod
     def update(cls):
         # Load latest view
-        cls.view = Window.get_view(ViewType.MAP)
+        cls.view = Window.get_view(ModeType.MAP)
 
         if cls.view.empty:
             cls.redraw_map()

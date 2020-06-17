@@ -1,12 +1,17 @@
-from .map import MapModel
-from collections import deque
-
+from enum import Enum
+import pygame
+from diamondquest.common.mode import ModeType
 
 class GameModel:
     """
     Top-level gamestate
     """
 
-    def __init__(self):
-        self.map = MapModel()
-        self.actionQue = deque()
+    mode = None
+    pause = False
+
+
+    @classmethod
+    def on_start(cls):
+        #map = MapModel.menu_map
+        cls.mode = ModeType.MENU

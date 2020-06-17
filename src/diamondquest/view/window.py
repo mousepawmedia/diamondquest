@@ -47,7 +47,8 @@ import pygame
 from diamondquest.common import color
 from diamondquest.common import constants
 
-from diamondquest.view import View, ViewType
+from diamondquest.view import View
+from diamondquest.common.mode import ModeType
 
 
 class Window:
@@ -95,9 +96,11 @@ class Window:
         """Redraw the entire window."""
         main_surface = pygame.display.get_surface()
         for view in cls.view_cache.values():
-            if view.type == cls.shadow_before:
-                main_surface.blit(cls.shadow, (0, 0))
-            main_surface.blit(view.surface, view.registration)
+            if view.visible:
+                if view.type == cls.shadow_before:
+                    main_surface.blit(cls.shadow, (0, 0))
+
+                main_surface.blit(view.surface, view.registration)
         pygame.display.flip()
 
     @classmethod
@@ -171,6 +174,20 @@ class Window:
         cls.shadow_before = None
 
     @classmethod
+    def show_view(cls, view):
+        if ( not view in cls.view_cache ):
+            cls.view_cache[view] = cls._create_view(view)
+
+        cls.view_cache[view].visible = True
+
+    @classmethod
+    def hide_view(cls, view):
+        if ( not view in cls.view_cache ):
+            cls.view_cache[view] = cls._create_view(view)
+
+        cls.view_cache[view].visible = False
+
+    @classmethod
     def get_view(cls, view):
         """Return the current surface for drawing on.
         view - the view to return the surface for
@@ -186,10 +203,12 @@ class Window:
         """Creates and returns an appropriately sized surface for a view.
         view - the purpose of the surface
         """
-        if view == ViewType.MAP:
+        if view == ModeType.MAP:
             width, height, x, y = cls.get_map_area()
-        elif view == ViewType.PUZZLE:
+        elif View == ModeType.PUZZLE:
             width, height, x, y = cls.get_puzzle_area()
-        elif view == ViewType.JOURNAL:
+        elif view == ModeType.JOURNAL:
+            width, height, x, y = cls.get_journal_area()
+        elif view == ModeType.MENU:
             width, height, x, y = cls.get_journal_area()
         return View(view, pygame.Surface((width, height)), (x, y))
