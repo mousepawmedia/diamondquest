@@ -1,8 +1,8 @@
 import pygame
 
 from diamondquest.common.constants import TEXTURE_RES
-from diamondquest.common import color
-from diamondquest.common import loader
+from diamondquest.common import color, loader
+from diamondquest.common import Resolution
 from diamondquest.model.map import (
     BlockType,
     TreasureVariant,
@@ -33,9 +33,9 @@ class BlockTexture:
         (BlockType.TREASURE, TreasureVariant.FOSSIL): (7, 2),
         (BlockType.TREASURE, TreasureVariant.ARTIFACT): (7, 3),
         (BlockType.TREASURE, TreasureVariant.MINERAL): (7, 4),
-        (Decoration.SPROUT): (0, 0),
-        (Decoration.DAISY): (1, 0),
-        (Decoration.DANDELION): (2, 0),
+        (Decoration.SPROUT, 0): (0, 0),
+        (Decoration.DAISY, 0): (1, 0),
+        (Decoration.DANDELION, 0): (2, 0),
     }
 
     cache = dict()
@@ -58,9 +58,13 @@ class BlockTexture:
         except KeyError:
             blockset = loader.load_texture("blockset")
 
-            texture = pygame.Surface((TEXTURE_RES, TEXTURE_RES))
+            texture = pygame.Surface(
+                (TEXTURE_RES, TEXTURE_RES), pygame.SRCALPHA
+            )
             if block == BlockType.AIR and variant == BlockType.AIR:
                 texture.fill(color.SKY)
+            elif block == Decoration.NONE:
+                return texture
             else:
                 texture.blit(
                     blockset,
@@ -68,7 +72,7 @@ class BlockTexture:
                     BlockTexture.texture_location(block, variant),
                 )
 
-            bh = Window.res.block_height
+            bh = Resolution.get_primary().block_height
             texture = pygame.transform.scale(texture, (bh, bh))
 
             cls.cache[(block, variant)] = texture

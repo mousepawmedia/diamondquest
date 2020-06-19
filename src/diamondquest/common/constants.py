@@ -48,7 +48,10 @@ TEXTURE_RES = 16
 BLOCK_COUNT = 8
 
 # Maximum number of blocks in a single map view
-BLOCK_MAX = BLOCK_COUNT * 8
+MAP_DEPTH = BLOCK_COUNT * 8
+
+# The maximum power level
+MAX_POWER_LEVEL = 8
 
 # The game title
 TITLE = "DiamondQuest 1.0"

@@ -42,40 +42,86 @@ Author(s): Elizabeth Larson, Jason C. McDonald
 
 from enum import Enum
 
+from diamondquest.common import constants
 from diamondquest.common import Direction
 from diamondquest.model.map import MapModel
 from diamondquest.model.player import ToolType
-from diamondquest.common.coord import Coord
 
 
 class PlayerAction(Enum):
-    HOOK_RIGHT = -3
-    HOOK_UP = -2
-    HOOK_LEFT = -1
-    STAND = 0
-    WALK = 1
-    CLIMB = 2
-    TOOL = 3
-    COFFEE = 0xC0FFEE
+    IDLE = 0
+    MOVE = 1
+    TOOL = 2
 
 
 class PlayerModel:
 
-    location = Coord(0, 0)
-    anchor = Coord(0, 0)
-    tool = None  # current tool
-    action = None  # current action/state
-    power = 0  # power level
+    player = None
 
     @classmethod
-    def status(cls):
-        """This would be called by the View, and should return
-        all player data needed for rendering."""
-        # Get the locality using x, y
-        # TODO: What would we return?
+    def get_player(cls):
+        if cls.player is None:
+            cls.player = PlayerModel()
+        return cls.player
 
-    @classmethod
-    def set_anchor(cls, direction):
-        locality = MapModel.get_locality(cls.location)
-        if locality.can_anchor(direction):
-            cls.anchor = Direction.relative_to(cls.col, cls.row, direction)
+    def __init__(self, start_column=0):
+        self._location = MapModel.get_surface_coord(col=start_column)
+
+        self._locality = MapModel.get_locality(self._location)
+        self._anchor = Direction.BELOW
+        self.action = PlayerAction.IDLE
+
+        self.tool = ToolType.HAND
+        self._power = 1
+        self.coffee = False
+
+    def reorient(self):
+        """Update action and locality and reset anchor
+        after a move.
+        """
+        self._locality = MapModel.get_locality(self._location)
+        if self._locality.can_stand():
+            self._anchor = Direction.BELOW
+            self.action = PlayerAction.IDLE
+        elif self._locality.can_climb():
+            self._anchor = Direction.HERE
+            self.action = PlayerAction.IDLE
+
+    @property
+    def anchor(self):
+        return self._anchor
+
+    def reanchor(self, direction):
+        """Set the anchor point if possible.
+        direction - the direction to place the anchor
+        Returns True if able to reanchor, else False
+        """
+        if self._locality.can_anchor(direction):
+            self._anchor = Direction.relative_to(self.col, self.row, direction)
+            self.reorient()
+            return True
+        return False
+
+    @property.getter
+    def power(self):
+        return self._power
+
+    @property.setter
+    def power(self, power):
+        """Set the power level between 1 and 8 inclusively."""
+        if power < 1:
+            self._power = 1
+        else:
+            self._power = min(power, constants.MAX_POWER_LEVEL)
+
+    def move(self, direction):
+        """Move in a particular direction."""
+        if self._locality.can_occupy(direction):
+            self._location = self._location.get_adjacent(direction)
+            self.reorient()
+            return True
+        return False
+
+    @property
+    def location(self):
+        return self._location

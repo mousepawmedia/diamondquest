@@ -42,7 +42,7 @@ Author(s): Harley Davis, Jason C. McDonald
 
 import pygame
 
-from diamondquest.common.coord import Coord, Depth
+from diamondquest.common.coord import Coord, Depth, Section, Resolution
 from diamondquest.model.map import MapModel
 from diamondquest.view.window import Window
 from diamondquest.common.mode import ModeType
@@ -50,6 +50,9 @@ from diamondquest.view.map import BlockTexture
 
 
 class MapView:
+
+    depth = Depth(1)  # HACK
+    section = Section(1)  # HACK
 
     # Mostly works for updating blocks
     # Would want to reconsider for character movement
@@ -75,6 +78,8 @@ class MapView:
 
         Window.update()
 
+    # TODO: Build `page()` classmethod for changing depth and section.
+
     # If this same function is going to handle
     # sprite movement as well, might need to change
     # x,y to be part of the que of changes, and have an enum
@@ -94,7 +99,7 @@ class MapView:
             cls.redraw_map()
         elif coord.col != -1 and coord.row == -1:
             # Redraw an entire column
-            cls.redraw_col(coord.row)
+            cls.redraw_col(col=coord.row)
             pass
         elif coord.col == -1 and coord.row != -1:
             # Redraw an entire row
@@ -102,7 +107,7 @@ class MapView:
             pass
         else:
             # Change specific block
-            MapView.draw_block(block, coord)
+            MapView.draw_block(coord)
 
         # TODO" Player movement redraw (offset for smooth movement)
         # Use percentage for offset (target pos +or- new pos * offset)
@@ -110,16 +115,33 @@ class MapView:
     @classmethod
     def draw_block(cls, coord):
         """Draw a single block on the screen.
-        x - the block column
-        y - the block row
+        coord - the block coordinate
         """
         block, _ = MapModel.get_block(coord)
 
-        block_size = Window.res.block_height
+        block_size = Resolution.get_primary().block_height
         block_surface = BlockTexture.load_texture(block.type, block.variant)
         cls.view.surface.blit(
-            block_surface, (coord.col * block_size, coord.row * block_size)
-        )  # TODO: Very broken!
+            block_surface,
+            coord.relative(
+                depth=cls.depth,
+                section=cls.section,
+                scale=block_size
+            )
+        )
+        # Render decorations.
+        # TODO: This will NOT work with offsets into unrendered blocks!
+        decor, offset = block.decoration
+        if decor:
+            decoration = BlockTexture.load_texture(decor)
+            cls.view.surface.blit(
+                decoration,
+                coord.get_adjacent(offset).relative(
+                    depth=Depth.of(coord.row),
+                    section=Section.of(coord.col),
+                    scale=block_size
+                ),
+            )
 
     @classmethod
     def redraw_avatar(cls):
@@ -130,7 +152,7 @@ class MapView:
         """Walking off-screen:
         Miner walks off of the screen, whole screen shifts
         """
-        for col in range(Window.res.blocks_across):
+        for col in cls.section:
             cls.redraw_col(col)
 
     @classmethod
@@ -138,7 +160,7 @@ class MapView:
         """Redraw all blocks in column
         col - the column to redraw
         """
-        for block, coord in MapModel.get_column(col, Depth(1)):
+        for block, coord in MapModel.get_column(col, cls.depth):
             cls.draw_block(coord)
 
     @classmethod

@@ -60,9 +60,17 @@ def read_loot_table(table):
     return read_json(f"loot/{table}.json")
 
 
+texture_cache = {}
+
+
 def load_texture(texture, subfolder="textures"):
-    """Load texture from resource directory."""
-    # TODO: Cache this puppy!
-    load_path = resource_path / subfolder / f"{texture}.gif"
-    with load_path.open("rb") as img:
-        return pygame.image.load(img)
+    """Load texture from resource directory or cache."""
+    try:
+        surface = texture_cache[texture]
+    except KeyError:
+        load_path = resource_path / subfolder / f"{texture}.gif"
+        with load_path.open("rb") as img:
+            surface = texture_cache[texture] = pygame.image.load(
+                img
+            ).convert_alpha()
+    return surface

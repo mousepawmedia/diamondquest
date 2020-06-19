@@ -118,6 +118,14 @@ class Locality:
         elif anchored_to == Direction.ABOVE:
             return not Direction.is_above(direction)
 
+    def can_occupy(self, direction):
+        """Returns whether the player can occupy the given position."""
+        return self.blocks[direction].can_occupy()
+
     def can_stand(self):
         """Returns whether the player can stand from this position."""
         return self.blocks[Direction.BELOW].can_stand()
+
+    def can_climb(self):
+        """Returns whether the player can freeclimb from this position."""
+        return self.blocks[Direction.HERE].can_climb()

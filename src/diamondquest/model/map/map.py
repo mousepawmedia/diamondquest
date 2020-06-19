@@ -40,46 +40,38 @@ Author(s): Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-import math
-
-from diamondquest.common import constants
-from diamondquest.common.coord import Coord, Depth
-from diamondquest.model.map import (
-    Block,
-    BlockType,
-    MantleVariant,
-    TreasureVariant,
-    Decoration,
-)
+from diamondquest.common import Coord, Direction, Depth
+from diamondquest.model.map import Locality
+from diamondquest.model.map import Block, BlockType
 
 
 class MapColumn:
     """A single column in the map."""
 
-    def __init__(self):
-        self.blocks = []
+    def __init__(self, col):
         """Generates a new map column"""
-        # Two levels of sky
-        for _ in range(2):
-            self.blocks.append(Block(type=BlockType.AIR, variant=BlockType.AIR))
-        # One level of grass, optional decorations
-        self.blocks.append(Block(type=BlockType.GRASS))
-        # TODO: Add optional decoration
-        # One level of dirt
-        self.blocks.append(Block(type=BlockType.DIRT))
-        # Stone and treasure until 3 shy of bottom
-        for row in range(5, constants.BLOCK_MAX - 3):
-            self.blocks.append(Block.make_stone(math.ceil(row / 8)))
+        self.blocks = []
 
-        self.blocks.append(
-            Block(type=BlockType.MANTLE, variant=MantleVariant.UPPER)
-        )
-        self.blocks.append(
-            Block(type=BlockType.MANTLE, variant=MantleVariant.MID)
-        )
-        self.blocks.append(
-            Block(type=BlockType.MANTLE, variant=MantleVariant.LOWER)
-        )
+        self.blocks.extend(Block.make_topsoil())
+
+        for row in range(len(self.blocks), Block.MANTLE_START):
+            coord = Coord(col, row)
+            adjacent = (
+                self.blocks[-1].type,
+                MapModel.get_block_type(coord.get_adjacent(Direction.LEFT)),
+                MapModel.get_block_type(coord.get_adjacent(Direction.RIGHT)),
+            )
+
+            self.blocks.append(
+                Block.make_stone(
+                    depth=Depth.of(row),
+                    adjacent_air=adjacent.count(BlockType.AIR),
+                    adjacent_dirt=adjacent.count(BlockType.DIRT),
+                    adjacent_treasure=adjacent.count(BlockType.TREASURE),
+                )
+            )
+
+        self.blocks.extend(Block.make_mantle())
 
     def get_section(self, depth):
         """Retrieves the blocks in part of the column"""
@@ -106,32 +98,43 @@ class MapModel:
             cls.updates = []
 
     @classmethod
-    def passive_get_block(cls, coord):
-        """Get block at coordinate, but return None if not yet generated.
+    def get_block_type(cls, coord):
+        """Get block type at coordinate, but return None if not yet generated.
         Does not attempt to generate missing blocks or columns."""
         try:
-            return cls.columns[coord.col].get_block(coord.row)
+            block = cls.columns[coord.col].get_block(coord.row)
+            return block.type
         except KeyError:
             return None
+
+    @classmethod
+    def get_surface_coord(cls, col):
+        """Returns the coordinate for the player standing on the surface
+        for the given column.
+        col - the column the player should be standing in."""
+        col = cls.get_column(col, depth=Depth(1))
+        for row, block in enumerate(col):
+            if block.type != BlockType.AIR:
+                return Coord(col, row - 1)
 
     @classmethod
     def get_column(cls, col, depth):
         try:
             column = cls.columns[col]
         except KeyError:
-            column = cls.columns[col] = MapColumn()
-        finally:
-            return [
-                (block, Coord(col, row))
-                for block, row in zip(column.get_section(depth), depth)
-            ]
+            column = cls.columns[col] = MapColumn(col)
+
+        return [
+            (block, Coord(col, row))
+            for block, row in zip(column.get_section(depth), depth)
+        ]
 
     @classmethod
     def get_block(cls, coord):
         try:
             block = cls.columns[coord.col].get_block(coord.row)
         except KeyError:
-            block = cls.columns[coord.col] = MapColumn()
+            block = cls.columns[coord.col] = MapColumn(coord.col)
         finally:
             return (block, coord)
 

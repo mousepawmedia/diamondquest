@@ -44,6 +44,21 @@ from diamondquest.common import constants
 
 
 class Resolution:
+    DEFAULT_WIDTH = 810
+    DEFAULT_HEIGHT = 610
+
+    primary = None
+
+    @classmethod
+    def get_primary(cls):
+        if cls.primary is None:
+            cls.primary = Resolution(cls.DEFAULT_WIDTH, cls.DEFAULT_HEIGHT)
+        return cls.primary
+
+    @classmethod
+    def set_primary(cls, resolution):
+        cls.primary = resolution
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -106,4 +121,4 @@ class Resolution:
     @property
     def blocks_across(self):
         """Returns the number of blocks that can fit across the map area."""
-        return math.floor(self.width / constants.TEXTURE_RES)
+        return math.floor(self.width / self.block_height)

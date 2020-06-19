@@ -51,7 +51,6 @@ from diamondquest.common.mode import ModeType
 
 
 class Window:
-    res = Resolution(810, 610)  # NOTE: Change this back when done testing
 
     # contains cached versions of the surfaces
     view_cache = dict()
@@ -65,7 +64,7 @@ class Window:
         width - the new window width
         height - the new window height
         """
-        cls.res = resolution
+        Resolution.set_primary(resolution)
         # Clear the cached surfaces, which will need to be
         # recreated for the new window size.
         cls.clear_cache()
@@ -78,7 +77,7 @@ class Window:
     @classmethod
     def draw(cls):
         """Draw the screen from scratch."""
-        screen = pygame.display.set_mode(cls.res.resolution)
+        screen = pygame.display.set_mode(Resolution.get_primary().resolution)
 
         # Write the caption to the screen.
         pygame.display.set_caption(constants.TITLE)
@@ -112,7 +111,7 @@ class Window:
     def _draw_shadow(cls):
         """Return a shadowed version of whole window."""
         if cls.shadow is None:
-            width, height, x, y = cls.res.map_area
+            width, height, x, y = Resolution.get_primary().map_area
             tint = pygame.Surface((width, height))
             tint.fill(color.BLACK)
             tint.set_alpha(200)
@@ -162,11 +161,11 @@ class Window:
         view - the purpose of the surface
         """
         if view == ModeType.MAP:
-            width, height, x, y = cls.res.map_area
+            width, height, x, y = Resolution.get_primary().map_area
         elif view == ModeType.PUZZLE:
-            width, height, x, y = cls.res.puzzle_area
+            width, height, x, y = Resolution.get_primary().puzzle_area
         elif view == ModeType.JOURNAL:
-            width, height, x, y = cls.res.journal_area
+            width, height, x, y = Resolution.get_primary().journal_area
         elif view == ModeType.MENU:
-            width, height, x, y = cls.res.journal_area
+            width, height, x, y = Resolution.get_primary().journal_area
         return View(view, pygame.Surface((width, height)), (x, y))

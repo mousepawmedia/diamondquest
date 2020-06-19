@@ -40,6 +40,9 @@ Author(s): Elizabeth Larson, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
+import math
+
+from diamondquest.common import Resolution
 from diamondquest.common.direction import Direction
 
 
@@ -48,7 +51,18 @@ class Coord:
         self.col = col
         self.row = row
 
-    @staticmethod
+    def relative(self, depth, section, scale=1):
+        return (
+            self.relative_col(section, scale),
+            self.relative_row(depth, scale),
+        )
+
+    def relative_row(self, depth, scale=1):
+        return (self.row - depth.top_x) * scale
+
+    def relative_col(self, section, scale=1):
+        return (self.col - section.start_row) * scale
+
     def get_adjacent(self, direction):
         if direction == Direction.HERE:
             return Coord(self.col, self.row)
@@ -86,3 +100,34 @@ class Depth:
 
     def __iter__(self):
         return iter(range(self.top_x, self.bottom_x + 1))
+
+    @classmethod
+    def of(cls, row):
+        return Depth(math.ceil(row / cls.HEIGHT))
+
+
+class Section:
+    def __init__(self, section, resolution=None):
+        if resolution is None:
+            resolution = Resolution.get_primary()
+
+        self.res = resolution
+        self.start_row = (section - 1) * self.res.blocks_across
+
+    @property
+    def end_row(self):
+        return self.start_row + self.res.blocks_across
+
+    @property
+    def col_range(self):
+        """Return the left and right column coordinates for the section."""
+        return (self.start_row, self.end_row)
+
+    def __iter__(self):
+        return iter(range(self.start_row, self.end_row + 1))
+
+    @classmethod
+    def of(cls, col, resolution=None):
+        if resolution is None:
+            resolution = Resolution.get_primary()
+        return Section(math.ceil(col / resolution.blocks_across), resolution)
