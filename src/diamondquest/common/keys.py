@@ -1,9 +1,8 @@
 """
-KeyboardController [DiamondQuest]
+Keys [DiamondQuest]
+Check if a certain kind of key is pressed.
 
-The KeyboardController handles keyboard input events
-
-Author(s): Harley Davis, Mohaned Mashaly, Jason C. McDonald
+Author(s): Mohaned Mashaly
 """
 
 # LICENSE (BSD-3-Clause)
@@ -40,54 +39,11 @@ Author(s): Harley Davis, Mohaned Mashaly, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from collections import deque
 import pygame.locals as KEYS
-
-import pygame
-from diamondquest.common.keys import Key
-from diamondquest.eventmanager.event import TickEvent
-
-
-class KeyboardController:
-    """Enqueues action events on keydown, deques on key up."""
-
-    action_que = deque()
-
+class Key:
+    arrows = (KEYS.K_UP, KEYS.K_DOWN, KEYS.K_LEFT, KEYS.K_RIGHT)
     @classmethod
-    def handle_input(cls):
-        # NOTE: I'm sure there is a cleaner way to handle the if statements. (-HD)
-        for event in pygame.event.get():
-            # Handle closure of window, may need a key
-            # for accessability.
-            if event.type == pygame.QUIT:
-                return False
-            if event.type == KEYS.KEYDOWN:
-                cls.action_que.append(event.key)
-            else:
-                if event.type == KEYS.KEYUP:
-                    # Arrow keys
-                    if Key.in_arrows(event.key):
-                        cls.action_que.remove(event.key)
-            # Other items from above, tools, movement mode etc,
-            # May not be needed if they aren't "repeatable"
-            # print(actionQue)
-        return True
-
-    @classmethod
-    def restore(cls, key):
-        cls.action_que.appendleft(key)
-
-    @classmethod
-    def grab(cls):
-        return cls.action_que.pop()
-
-    @classmethod
-    def pending(cls):
-        return len(cls.action_que) > 0
-
-    @classmethod
-    def notify(cls, event):
-        if isinstance(event, TickEvent):
-            # Handle Input Events
-            for event in pygame.event.get():
-                pass
+    def in_arrows(cls,event):
+        if event in cls.arrows:
+            return True
+        return False
