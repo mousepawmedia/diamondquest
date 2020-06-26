@@ -1,9 +1,9 @@
 """
-Data Loader [DiamondQuest]
+Game Menu [DiamondQuest]
 
-Load data and resource files.
+The view for the Game Menu.
 
-Author(s): Jason C. McDonald
+Author(s): Wilfrantz Dede, Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
@@ -27,7 +27,16 @@ Author(s): Jason C. McDonald
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIME specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 # ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION)D. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
 # LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 # CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
@@ -40,43 +49,19 @@ Author(s): Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from pathlib import Path
-import json
-
-import pygame
-
-resource_path = Path(__file__).resolve().parents[1] / "resources"
+from diamondquest.common import Color
+from diamondquest.view.window import Window
+from diamondquest.common.mode import ModeType
+from diamondquest.model.menu import MenuModel
 
 
-def read_json(path):
-    load_path = resource_path / path
-    data = dict()
-    with load_path.open("r") as file:
-        data = json.load(file)
-    return data
+class MenuView:
+    @classmethod
+    def update(cls):
+        cls.view = Window.get_view(ModeType.MENU)
+        Window.add_shadow_under(ModeType.MENU)  # TEMPORARY ONLY!
+        cls.view.surface.fill(Color.WOOD)
 
-
-def read_loot_table(table):
-    return read_json(f"loot/{table}.json")
-
-
-def load_font(font, size, subfolder="fonts", extension="ttf"):
-    load_path = resource_path / subfolder / font / f"{font}.{extension}"
-    with load_path.open("rb") as fontface:
-        return pygame.font.Font(fontface, size)
-
-
-texture_cache = {}
-
-
-def load_texture(texture, subfolder="textures"):
-    """Load texture from resource directory or cache."""
-    try:
-        surface = texture_cache[texture]
-    except KeyError:
-        load_path = resource_path / subfolder / f"{texture}.gif"
-        with load_path.open("rb") as img:
-            surface = texture_cache[texture] = pygame.image.load(
-                img
-            ).convert_alpha()
-    return surface
+    @classmethod
+    def redraw(cls):
+        """Render the view to the screen."""

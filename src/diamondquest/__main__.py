@@ -2,21 +2,23 @@
 import pygame
 from pygame.locals import *
 
-from diamondquest.view.window import Window
-from diamondquest.controller import (
+pygame.init()  # MUST BE HERE, called before any imports
+
+from diamondquest.view.window import Window  # noqa: E402
+from diamondquest.controller import (  # noqa: E402
     KeyboardController,
     MenuController,
     MapController,
     JournalController,
 )
 
-from diamondquest.common.constants import FPS
-from diamondquest.view.map import MapView
-from diamondquest.view.puzzle import PuzzleView
-from diamondquest.view.journal import JournalView
-from diamondquest.view.gamemenu import MenuView
-from diamondquest.model.game import GameModel
-from diamondquest.common.mode import ModeType
+from diamondquest.common.constants import FPS  # noqa: E402
+from diamondquest.view.map import MapView  # noqa: E402
+from diamondquest.view.puzzle import PuzzleView  # noqa: E402
+from diamondquest.view.journal import JournalView  # noqa: E402
+from diamondquest.view.menu import MenuView  # noqa: E402
+from diamondquest.model.game import GameModel  # noqa: E402
+from diamondquest.common.mode import ModeType  # noqa: E402
 
 # Temporary imports here...
 # from diamondquest.model.map.loot import LootTables
@@ -36,7 +38,6 @@ def terrible_test_code_function():
 
 
 def main():
-    pygame.init()
     clock = pygame.time.Clock()
 
     # model = GameModel()

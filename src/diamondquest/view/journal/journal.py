@@ -40,7 +40,7 @@ Author(s): Wilfrantz Dede, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from diamondquest.common import color
+from diamondquest.common import Color
 from diamondquest.view.window import Window
 from diamondquest.common.mode import ModeType
 
@@ -50,7 +50,7 @@ class JournalView:
     def update(cls):
         cls.view = Window.get_view(ModeType.JOURNAL)
         Window.add_shadow_under(ModeType.JOURNAL)  # TEMPORARY ONLY!
-        cls.view.surface.fill(color.WHITE)
+        cls.view.surface.fill(Color.WHITE)
 
     @classmethod
     def redraw(cls):

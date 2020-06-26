@@ -1,8 +1,8 @@
 """
-Game Menu [DiamondQuest]
+Font Attributes [DiamondQuest]
 
-The view for the Game Menu.
-
+Reusable and shared font attributes.
+,
 Author(s): Wilfrantz Dede, Jason C. McDonald
 """
 
@@ -27,16 +27,7 @@ Author(s): Wilfrantz Dede, Jason C. McDonald
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-# ARE DISCLAIME specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 # ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
-# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-# INTERRUPTION)D. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
 # LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 # CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
@@ -49,18 +40,43 @@ Author(s): Wilfrantz Dede, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from diamondquest.common import color
-from diamondquest.view.window import Window
-from diamondquest.common.mode import ModeType
+from enum import Enum
+
+from diamondquest.common import Color
+from diamondquest.common import loader
 
 
-class MenuView:
-    @classmethod
-    def update(cls):
-        cls.view = Window.get_view(ModeType.MENU)
-        Window.add_shadow_under(ModeType.MENU)  # TEMPORARY ONLY!
-        cls.view.surface.fill(color.WOOD)
+class Fontfaces:
+    DECORATIVE = "Kirsty"
+    MATH = "cascadia_code"
 
-    @classmethod
-    def redraw(cls):
-        """Render the view to the screen."""
+
+class FontStyle(Enum):
+    NORMAL = 0
+    BOLD = 1
+    ITALIC = 2
+    UNDERLINE = 3
+
+
+class FontAlign(Enum):
+   CENTER = 0
+   LEFT = 1
+   RIGHT = 2
+
+
+class FontAttributes:
+    def __init__(self, fontface, size, style=FontStyle.NORMAL, align=FontAlign.CENTER, color=Color.BLACK):
+        self.fontface = fontface
+        self.size = size
+        self.style = style
+        self.align = align
+        self.color = color
+
+        self._font = loader.load_font(font=self.fontface, size=self.size)
+
+
+class FontAttributeDefaults:
+    MENU = FontAttributes(
+        fontface=Fontfaces.DECORATIVE,
+        size=60  # HACK! This needs to be a FontSize object determined by the Resolution
+    )

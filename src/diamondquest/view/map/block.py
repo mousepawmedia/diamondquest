@@ -1,8 +1,8 @@
 import pygame
 
 from diamondquest.common.constants import TEXTURE_RES
-from diamondquest.common import color, loader
-from diamondquest.common import Resolution
+from diamondquest.common import Color, Resolution
+from diamondquest.common import loader
 from diamondquest.model.map import (
     BlockType,
     TreasureVariant,
@@ -62,9 +62,7 @@ class BlockTexture:
                 (TEXTURE_RES, TEXTURE_RES), pygame.SRCALPHA
             )
             if block == BlockType.AIR and variant == BlockType.AIR:
-                texture.fill(color.SKY)
-            elif block == Decoration.NONE:
-                return texture
+                texture.fill(Color.SKY)
             else:
                 texture.blit(
                     blockset,

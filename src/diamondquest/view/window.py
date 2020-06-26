@@ -42,7 +42,7 @@ Author(s): Harley Davis, Wilfrantz Dede, Jason C. McDonald
 
 import pygame
 
-from diamondquest.common import color
+from diamondquest.common import Color
 from diamondquest.common import constants
 from diamondquest.common import Resolution
 
@@ -83,7 +83,7 @@ class Window:
         pygame.display.set_caption(constants.TITLE)
 
         # Fill the screen with the frame color.
-        screen.fill(color.WOOD)
+        screen.fill(Color.WOOD)
 
         # Render to the screen.
         cls.update()
@@ -113,7 +113,7 @@ class Window:
         if cls.shadow is None:
             width, height, x, y = Resolution.get_primary().map_area
             tint = pygame.Surface((width, height))
-            tint.fill(color.BLACK)
+            tint.fill(Color.BLACK)
             tint.set_alpha(200)
             cls.shadow = pygame.display.get_surface().copy()
             cls.shadow.blit(tint, (x, y))

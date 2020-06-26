@@ -160,7 +160,8 @@ class MapView:
         """Redraw all blocks in column
         col - the column to redraw
         """
-        for block, coord in MapModel.get_column(col, cls.depth):
+        # TODO: It's wasteful to make draw_block get block all over again here!
+        for _, coord in MapModel.get_column(col, cls.depth):
             cls.draw_block(coord)
 
     @classmethod

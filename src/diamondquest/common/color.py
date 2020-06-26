@@ -38,7 +38,9 @@ RGB colors used throughout DiamondQuest.
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-WOOD = (71, 36, 36)
-SKY = (135, 206, 235)
+
+class Color:
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    WOOD = (71, 36, 36)
+    SKY = (135, 206, 235)
