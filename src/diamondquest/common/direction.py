@@ -40,10 +40,10 @@ Author(s): Elizabeth Larson, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from enum import Enum
+from enum import IntEnum
 
 
-class Direction(Enum):
+class Direction(IntEnum):
     """The current position is always 0. The floor is 2.
     Positions are numbered clockwise.
     Horizontal is divisible by 4, vertical is not; both are even.

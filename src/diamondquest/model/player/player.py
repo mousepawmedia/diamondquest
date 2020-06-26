@@ -65,7 +65,7 @@ class PlayerModel:
         return cls.player
 
     def __init__(self, start_column=0):
-        self._location = MapModel.get_surface_coord(col=start_column)
+        self._location = MapModel.get_surface_coord(col_num=start_column)
 
         self._locality = MapModel.get_locality(self._location)
         self._anchor = Direction.BELOW
@@ -102,6 +102,14 @@ class PlayerModel:
             return True
         return False
 
+    def move(self, direction):
+        """Move in a particular direction."""
+        if self._locality.can_occupy(direction):
+            self._location = self._location.get_adjacent(direction)
+            self.reorient()
+            return True
+        return False
+'''
     @property.getter
     def power(self):
         return self._power
@@ -114,14 +122,9 @@ class PlayerModel:
         else:
             self._power = min(power, constants.MAX_POWER_LEVEL)
 
-    def move(self, direction):
-        """Move in a particular direction."""
-        if self._locality.can_occupy(direction):
-            self._location = self._location.get_adjacent(direction)
-            self.reorient()
-            return True
-        return False
+
 
     @property
     def location(self):
         return self._location
+'''

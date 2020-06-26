@@ -120,12 +120,12 @@ class Locality:
 
     def can_occupy(self, direction):
         """Returns whether the player can occupy the given position."""
-        return self.blocks[direction].can_occupy()
+        return self.blocks[direction][0].can_occupy()
 
     def can_stand(self):
         """Returns whether the player can stand from this position."""
-        return self.blocks[Direction.BELOW].can_stand()
+        return self.blocks[Direction.BELOW][0].can_stand()
 
     def can_climb(self):
         """Returns whether the player can freeclimb from this position."""
-        return self.blocks[Direction.HERE].can_climb()
+        return self.blocks[Direction.HERE][0].can_climb()

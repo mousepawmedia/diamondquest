@@ -1,7 +1,7 @@
 """
-MapController [DiamondQuest]
+PlayerController [DiamondQuest]
 
-Controller for Map.
+Controller for Player.
 
 Author(s): Harley Davis, Jason C. McDonald
 """
@@ -44,32 +44,49 @@ import pygame.locals as KEYS
 
 from diamondquest.controller import KeyboardController
 from diamondquest.model.game import GameModel
-from diamondquest.common.mode import ModeType
+from diamondquest.model.player import PlayerModel
+from diamondquest.common import ModeType, Direction
 from diamondquest.view.window import Window
 
 
-class MapController:
+class PlayerController:
     @staticmethod
     def process_action():
         if GameModel.mode == ModeType.MAP:
             if KeyboardController.pending():
                 action = KeyboardController.grab()
-
+                
+                player = PlayerModel.get_player()
+                # Open Menu
                 if action == KEYS.K_ESCAPE:
                     GameModel.mode = ModeType.MENU
                     Window.show_view(ModeType.MENU)
 
-                if action == KEYS.K_j:
+                # Open Journal
+                elif action == KEYS.K_j:
                     GameModel.mode = ModeType.JOURNAL
                     Window.show_view(ModeType.JOURNAL)
 
                 # Handling arrows here
                 # They are put back in front in case arrows are held down
                 elif action == KEYS.K_UP:
+                    print("PlayerController: process_action - Trying to move up")
+                    print("Can I move up? - ", player.move(Direction.ABOVE))
+                    print("New coords: col, row - ", player._location.col, player._location.row)
                     KeyboardController.restore(action)
                 elif action == KEYS.K_DOWN:
+                    print("PlayerController: process_action - Trying to move down")
+                    print("Can I move down? - ",player.move(Direction.BELOW))
+                    print("New coords: col, row - ", player._location.col, player._location.row)
                     KeyboardController.restore(action)
                 elif action == KEYS.K_LEFT:
+                    print("PlayerController: process_action - Trying to move left")
+                    print("Can I move left? - ",player.move(Direction.LEFT))
+                    print("New coords: col, row - ", player._location.col, player._location.row)
                     KeyboardController.restore(action)
                 elif action == KEYS.K_RIGHT:
+                    print("PlayerController: process_action - Trying to move right")
+                    print("Can I move right? - ",player.move(Direction.RIGHT))
+                    print("New coords: col, row - ", player._location.col, player._location.row)
                     KeyboardController.restore(action)
+                

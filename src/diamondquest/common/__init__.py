@@ -9,3 +9,4 @@ from .font import (
     Fontfaces,
     FontAttributeDefaults
 )
+from .mode import ModeType

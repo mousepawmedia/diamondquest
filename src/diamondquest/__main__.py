@@ -8,7 +8,7 @@ from diamondquest.view.window import Window  # noqa: E402
 from diamondquest.controller import (  # noqa: E402
     KeyboardController,
     MenuController,
-    MapController,
+    PlayerController,
     JournalController,
 )
 
@@ -71,7 +71,7 @@ def main():
 
 def update_controllers():
     MenuController.process_action()
-    MapController.process_action()
+    PlayerController.process_action()
     JournalController.process_action()
 
 

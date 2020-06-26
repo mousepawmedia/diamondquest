@@ -1,4 +1,4 @@
 from .keyboard import KeyboardController
 from .journal import JournalController
-from .map import MapController
+from .player import PlayerController
 from .menu import MenuController
