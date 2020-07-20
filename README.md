@@ -22,10 +22,30 @@ Featuring original retro graphics, intuitive gameplay, and a relaxing ambient
 soundtrack, **DiamondQuest** will challenge everything you ever thought you knew
 about platformer games. Get ready for the most fun you've ever had with math.
 
-## Authors
+## Dependencies
+
+DiamondQuest is built with **Python 3.7** and **PyGame**.
+See *requirements.txt* for full dependency list.
+
+## Running the Game
+
+You can run the game directly from this repository. If you're on a system
+that supports Makefiles, you can simply run `make run`.
+
+Otherwise, create a Python 3.7 virtual environment, and install the package
+directly into it, using the following commands from the root of the repository:
+
+```
+python3.7 -m venv venv   # create the virtual environment
+venv/bin/pip install .   # install the package from the repository
+venv/bin/python3 -m diamondquest   # run DiamondQuest in the virtual environment
+```
+
+## Credits
 
 DiamondQuest was built as part of GAME MODE 2020, an annual open source event
-at MousePaw Media. Thanks to everyone who got involved!
+at MousePaw Media, and during a sprint at EuroPython 2020 Online.
+Thanks to everyone who got involved!
 
 MousePaw Media staff is denoted by [brackets].
 
@@ -36,34 +56,31 @@ Programming:
  - [Muhammad Adeel Hussain]
  - [Elizabeth Larson]
  - [Ben Lovy]
- - [Jason C. McDonald]
+ - Mohaned Mashaly
+ - [Jason C. McDonald]: programming lead
  - [Graham Mix]
- - Moshe Uminer
+ - Kinyanjui "Kelvin" Wangonya
 
 Graphics:
- - [Elizabeth Larson]
- - [Jason C. McDonald]
- - Wightking
+ - [Anna R. Dunster]: treasure textures
+ - [Elizabeth Larson]: miner avatar, splash screen
+ - Wightking: block textures
 
 Sounds/Music:
- - [Jason C. McDonald]
- - Bowen Volwiler
+ - [Jason C. McDonald]: menu music
 
 Educational Design:
  - [Jason C. McDonald]
  - [Graham Mix]
 
-## Dependencies
-
-DiamondQuest is built with **Python 3.7** and **PyGame**.
-See *requirements.txt* for full dependency list.
-
 ## Development
 
 To get started on development quickly, we've also provided
-*requirements_dev.txt* and a Makefile. On any system supporting Makefiles,
-ensure you have Python 3.7 installed, and then run `make venv` to create the
-virtual environment with all required dependencies for development.
+*requirements_dev.txt* and a Makefile.
+
+On any system supporting Makefiles, ensure you have Python 3.7 installed,
+and then run `make venv-dev` to create the virtual environment with all
+required dependencies for development.
 
 See `make help` for the Makefile's other uses.
 
