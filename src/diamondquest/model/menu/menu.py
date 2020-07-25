@@ -69,6 +69,7 @@ class ButtonItem:
         button_type=ButtonType.STATIC
     ):
         self.text_item = TextItem(text, attributes)
+        self.button_type = button_type
 
 
 class MenuType(Enum):
@@ -126,7 +127,7 @@ class MenuModel:
 
     def __init__(self, title, *items):
         self.items = [TextItem(title)]
-        (self.items.append(item) for item in items)
+        self.items.extend(items)
 
     def __iter__(self):
-        iter(self.item)
+        iter(self.items)

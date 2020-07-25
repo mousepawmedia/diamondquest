@@ -62,8 +62,7 @@ def read_loot_table(table):
 
 def load_font(font, size, subfolder="fonts", extension="ttf"):
     load_path = resource_path / subfolder / font / f"{font}.{extension}"
-    with load_path.open("rb") as fontface:
-        return pygame.font.Font(fontface, size)
+    return pygame.font.Font(str(load_path), size)
 
 
 texture_cache = {}

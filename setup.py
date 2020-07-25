@@ -31,7 +31,7 @@ setuptools.setup(
     include_package_data=True,
     entry_points={
         'gui_scripts': [
-            'main = diamondquest.__main__:main',
+            'diamondquest = diamondquest.__main__:main',
         ],
     },
     install_requires=[
