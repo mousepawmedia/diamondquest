@@ -57,7 +57,7 @@ from diamondquest.model.menu import MenuModel
 
 class MenuView:
     @classmethod
-    def update(cls):
+    def update_view(cls):
         cls.view = Window.get_view(ModeType.MENU)
         Window.add_shadow_under(ModeType.MENU)  # TEMPORARY ONLY!
         cls.view.surface.fill(Color.WOOD)

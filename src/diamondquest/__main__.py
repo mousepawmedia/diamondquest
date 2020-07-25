@@ -13,7 +13,7 @@ from diamondquest.controller import (  # noqa: E402
 )
 
 from diamondquest.common.constants import FPS  # noqa: E402
-from diamondquest.view.map import MapView  # noqa: E402
+from diamondquest.view.map import MapView, PlayerView  # noqa: E402
 from diamondquest.view.puzzle import PuzzleView  # noqa: E402
 from diamondquest.view.journal import JournalView  # noqa: E402
 from diamondquest.view.menu import MenuView  # noqa: E402
@@ -45,7 +45,7 @@ def main():
     window.draw()
 
     GameModel.on_start()
-    MapView.update()
+    MapView.update_view()
     window.show_view(ModeType.MAP)
     window.show_view(ModeType.MENU)
 
@@ -77,9 +77,10 @@ def update_controllers():
 
 # Called the right update_view depending on state.
 def update_views():
-    MapView.update()
-    MenuView.update()
-    JournalView.update()
+    MapView.update_view()
+    PlayerView.update_view()
+    MenuView.update_view()
+    JournalView.update_view()
 
 
 if __name__ == "__main__":

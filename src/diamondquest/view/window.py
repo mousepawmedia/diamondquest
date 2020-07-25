@@ -86,10 +86,10 @@ class Window:
         screen.fill(Color.WOOD)
 
         # Render to the screen.
-        cls.update()
+        cls.update_view()
 
     @classmethod
-    def update(cls):
+    def update_view(cls):
         """Redraw the entire window."""
         # TODO: This is getting convoluted; refactor
 

@@ -46,6 +46,7 @@ from diamondquest.common.coord import Coord, Depth, Section, Resolution
 from diamondquest.model.map import MapModel
 from diamondquest.model.player import PlayerModel
 from diamondquest.view.window import Window
+from diamondquest.view.map.player import PlayerView
 from diamondquest.common.mode import ModeType
 from diamondquest.view.map import BlockTexture
 
@@ -59,7 +60,7 @@ class MapView:
     # Would want to reconsider for character movement
     # As you'll at least want starting block and ending block.
     @classmethod
-    def update(cls):
+    def update_view(cls):
         # Load latest view
         cls.view = Window.get_view(ModeType.MAP)
 
@@ -76,9 +77,9 @@ class MapView:
                 MapView.redraw(coord)
 
         # TODO: Render sprite next using separate functions
-        PlayerModel.get_sprite().draw(cls.view.surface)
+        PlayerView.get_primary().draw(cls.view.surface)
 
-        Window.update()
+        Window.update_view()
 
     # TODO: Build `page()` classmethod for changing depth and section.
 

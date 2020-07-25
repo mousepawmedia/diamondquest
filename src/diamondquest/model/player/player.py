@@ -50,28 +50,11 @@ from diamondquest.model.map import MapModel
 from diamondquest.model.player import ToolType
 from diamondquest.common.color import Color
 
+
 class PlayerAction(Enum):
     IDLE = 0
     MOVE = 1
     TOOL = 2
-
-class PlayerSprite(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        # TODO start with actual sprite imge
-        self.image = pygame.Surface((50, 50))
-        self.image.fill(Color.WHITE)
-        self.rect = self.image.get_rect()
-
-    def update(self, location):
-        # TODO other arguments for animation, setting correct image etc
-        # TODO scalling ???
-        scale = Resolution.get_primary().block_height  # TODO only valid while display is square
-        print('scale', scale)
-        self.rect.x = location.col * scale
-        self.rect.y = location.row *scale
-
-
 
 
 class PlayerModel:
@@ -94,8 +77,6 @@ class PlayerModel:
         self.tool = ToolType.HAND
         self._power = 1
         self.coffee = False
-
-        self.sprites = pygame.sprite.Group(PlayerSprite())
 
     def reorient(self):
         """Update action and locality and reset anchor
@@ -129,13 +110,8 @@ class PlayerModel:
         if self._locality.can_occupy(direction):
             self._location = self._location.get_adjacent(direction)
             self.reorient()
-            self.sprites.update(self._location)
             return True
         return False
-
-    @classmethod
-    def get_sprite(cls):
-        return cls.get_player().sprites
 
 '''
     @property.getter
