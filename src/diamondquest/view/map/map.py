@@ -44,6 +44,7 @@ import pygame
 
 from diamondquest.common.coord import Coord, Depth, Section, Resolution
 from diamondquest.model.map import MapModel
+from diamondquest.model.player import PlayerModel
 from diamondquest.view.window import Window
 from diamondquest.common.mode import ModeType
 from diamondquest.view.map import BlockTexture
@@ -75,6 +76,7 @@ class MapView:
                 MapView.redraw(coord)
 
         # TODO: Render sprite next using separate functions
+        PlayerModel.get_sprite().draw(cls.view.surface)
 
         Window.update()
 
