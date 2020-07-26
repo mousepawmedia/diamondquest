@@ -46,7 +46,7 @@ KEY_REPEAT_RATE = 250
 
 # The number of pixels in a single "block" in the source textures.
 TEXTURE_RES = 16
-
+TEXTURE_RES_SPRITE = 20  # TODO issue with sprite sheet? this should probably be the same as TEXTURE_RES?
 # The number of blocks from top to bottom of screen
 BLOCK_COUNT = 8
 

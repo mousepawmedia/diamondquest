@@ -73,7 +73,8 @@ class MenuView:
         cls._draw_text(
             row=0,
             text=cls.menu.title.text,
-            text_attributes=cls.menu.title.text_attributes)
+            text_attributes=cls.menu.title.text_attributes,
+        )
         for row, item in enumerate(cls.menu.items, start=1):
             if isinstance(item, diamondquest.model.menu.ButtonItem):
                 cls._draw_item_background(row)
@@ -105,7 +106,7 @@ class MenuView:
             x = item_width - 2 * cls.horizontal_margin - text_width
         elif align == FontAlign.CENTER:
             text_width, text_height = text_surface.get_size()
-            x = (item_width - text_width ) // 2
+            x = (item_width - text_width) // 2
         else:
             raise ValueError(f"Unknown font align: {align}")
         y = row * item_height

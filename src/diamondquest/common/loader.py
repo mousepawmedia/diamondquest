@@ -3,7 +3,7 @@ Data Loader [DiamondQuest]
 
 Load data and resource files.
 
-Author(s): Jason C. McDonald
+Author(s): Stephen J Gallagher, Jason C. McDonald
 """
 
 # LICENSE (BSD-3-Clause)
@@ -79,3 +79,17 @@ def load_texture(texture, subfolder="textures"):
                 img
             ).convert_alpha()
     return surface
+
+
+sprite_cache = {}
+
+
+def load_player_sprites(sheet_name, subfolder="sprites"):
+    try:
+        sheet = sprite_cache[sheet_name]
+    except KeyError:
+        load_path = resource_path / subfolder / f"{sheet_name}.gif"
+        with load_path.open("rb") as img:
+            sheet = pygame.image.load(img).convert_alpha()
+        sprite_cache[sheet_name] = sheet
+    return sheet

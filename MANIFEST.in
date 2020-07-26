@@ -4,3 +4,4 @@ include src/diamondquest/resources/fonts/*/*.txt
 include src/diamondquest/resources/fonts/*/*.ttf
 include src/diamondquest/resources/loot/*.json
 include src/diamondquest/resources/textures/*.gif
+include src/diamondquest/resources/sprites/*.gif

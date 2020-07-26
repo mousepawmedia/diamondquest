@@ -124,9 +124,7 @@ class TextItem(MenuItem):
     """A menu item that is only static text."""
 
     def __init__(
-            self,
-            text,
-            attributes=FontAttributeDefaults.MENU,
+        self, text, attributes=FontAttributeDefaults.MENU,
     ):
         super().__init__()
         self.raw_text = text
@@ -140,7 +138,6 @@ class TextItem(MenuItem):
     @property
     def text_attributes(self):
         return self.attributes
-
 
 
 class ButtonType(Enum):
@@ -186,16 +183,24 @@ class MenuModel:
     @classmethod
     def initialize(cls):
         cls.menu_items["text_existing_miner"] = TextItem(text="Existing Miner")
-        cls.menu_items["scroll_existing_miner"] = ButtonItem(text="<none>", button_type=ButtonType.SCROLL)
+        cls.menu_items["scroll_existing_miner"] = ButtonItem(
+            text="<none>", button_type=ButtonType.SCROLL
+        )
         cls.menu_items["text_new_miner"] = TextItem(text="New Miner")
-        cls.menu_items["input_new_miner"] = ButtonItem(text="Enter Name", button_type=ButtonType.INPUT)
-        cls.menu_items["scroll_music_volume"] = ButtonItem(text="Music: 10", button_type=ButtonType.SCROLL)
-        cls.menu_items["scroll_sound_volume"] = ButtonItem(text="Sound: 10", button_type=ButtonType.SCROLL)
+        cls.menu_items["input_new_miner"] = ButtonItem(
+            text="Enter Name", button_type=ButtonType.INPUT
+        )
+        cls.menu_items["scroll_music_volume"] = ButtonItem(
+            text="Music: 10", button_type=ButtonType.SCROLL
+        )
+        cls.menu_items["scroll_sound_volume"] = ButtonItem(
+            text="Sound: 10", button_type=ButtonType.SCROLL
+        )
         cls.menu_items["button_quit"] = ButtonItem(text="QUIT")
 
         cls.menu_items["button_quit"].add_key_down_listener(
-            pygame.K_RETURN,
-            lambda: GameModel.stop_game())
+            pygame.K_RETURN, lambda: GameModel.stop_game()
+        )
 
         cls.menus[MenuType.GAME] = MenuModel(
             title="DiamondQuest",
@@ -207,7 +212,8 @@ class MenuModel:
                 cls.menu_items["scroll_music_volume"],
                 cls.menu_items["scroll_sound_volume"],
                 cls.menu_items["button_quit"],
-            ])
+            ],
+        )
         cls.menus[MenuType.DEV] = MenuModel(title="DevMenu", items=[])
 
     @classmethod
@@ -231,8 +237,7 @@ class MenuModel:
         self.title = TextItem(title)
         self.items = items
         self.selectable_items = [
-            i for i, item in enumerate(items)
-            if isinstance(item, ButtonItem)
+            i for i, item in enumerate(items) if isinstance(item, ButtonItem)
         ]
         self.which_selected = 0 if len(self.selectable_items) > 0 else -1
 
