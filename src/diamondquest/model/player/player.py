@@ -3,7 +3,7 @@ Player Model [DiamondQuest]
 
 Stores current data about the player avatar.
 
-Author(s): Elizabeth Larson, Jason C. McDonald
+Author(s): Elizabeth Larson, Jason C. McDonald, Ajay Ratnam
 """
 
 # LICENSE (BSD-3-Clause)
@@ -49,6 +49,7 @@ from diamondquest.common import Direction, Resolution
 from diamondquest.model.map import MapModel
 from diamondquest.model.player import ToolType
 from diamondquest.common.color import Color
+from diamondquest.common import options
 
 
 class PlayerAction(Enum):
@@ -127,19 +128,18 @@ class PlayerModel:
 
     def move(self, direction):
         """Move in a particular direction."""
-        if False:  # Turn on 'spectator/god mode', allows noclip
+        if options.noclip:  # Turn on 'spectator mode', allows noclip
             self._location = self._location.get_adjacent(direction)
             self.reorient()
             return True
 
+        while not self._locality.can_occupy(Direction.HERE):
+            self._location = self._location.get_adjacent(Direction.ABOVE)
+            self.reorient()
+
         if self._locality.can_occupy(direction):
             self._location = self._location.get_adjacent(direction)
             self.reorient()
-
-            # However, if we can also move down we go down!
-            if self._locality.can_occupy(Direction.BELOW):
-                self._location = self._location.get_adjacent(Direction.BELOW)
-                self.reorient()
 
             return True
         elif self._locality.can_occupy(Direction.ABOVE):

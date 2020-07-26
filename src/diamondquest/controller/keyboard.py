@@ -3,7 +3,7 @@ KeyboardController [DiamondQuest]
 
 The KeyboardController handles keyboard input events
 
-Author(s): Harley Davis, Mohaned Mashaly, Jason C. McDonald, Stanislav Schmidt
+Author(s): Harley Davis, Mohaned Mashaly, Jason C. McDonald, Stanislav Schmidt, Ajay Ratnam
 """
 
 # LICENSE (BSD-3-Clause)
@@ -49,6 +49,7 @@ import pygame
 from diamondquest.common.keys import Key
 from diamondquest.common.constants import KEY_REPEAT_RATE
 from diamondquest.eventmanager.event import TickEvent
+from diamondquest.common import options
 
 KNOWN_KEYS = [
     KEYS.K_UP,
@@ -78,6 +79,9 @@ class KeyboardController:
                 return False
         # now special processing for keys
         keyscan = pygame.key.get_pressed()
+        if keyscan[KEYS.K_F9]:
+            options.noclip = not options.noclip
+            return True
         keys = {k: keyscan[k] for k in KNOWN_KEYS}
         if sum(keys.values()) == 0:
             # no keys depressed, reset

@@ -20,6 +20,9 @@ from diamondquest.view.menu import MenuView  # noqa: E402
 from diamondquest.model.menu import MenuModel  # noqa: E402
 from diamondquest.model.game import GameModel  # noqa: E402
 from diamondquest.common.mode import ModeType  # noqa: E402
+from diamondquest.model.player import PlayerModel
+from diamondquest.common import Direction
+from diamondquest.common import options
 
 # Temporary imports here...
 # from diamondquest.model.map.loot import LootTables
@@ -51,11 +54,17 @@ def main():
     window.show_view(ModeType.MAP)
     window.show_view(ModeType.MENU)
 
+    player = PlayerModel.get_player()
+
     print("1 to hide initial menu")
     print("Esc to toggle menu")
     print("J to toggle Journal")
 
     while GameModel.running:
+        if not options.noclip:
+            player.move(Direction.BELOW)
+            player.reorient()
+
         # Keep the loop running at roughly 16 FPS.
         # TODO: Is there a better way to handle this?
         clock.tick(FPS)
@@ -64,6 +73,9 @@ def main():
         GameModel.running = KeyboardController.handle_input()
 
         if GameModel.running:
+            if not options.noclip:
+                player.move(Direction.BELOW)
+                player.reorient()
             # System Tick - Update Model
             update_controllers()
             # View Tick - Update View
