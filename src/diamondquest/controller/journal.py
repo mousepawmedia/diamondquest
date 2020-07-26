@@ -63,10 +63,14 @@ class JournalController:
                 # Handling arrows here
                 # They are put back in front in case arrows are held down
                 elif action == KEYS.K_UP:
-                    KeyboardController.restore(action)
+                    pass
+                    # TODO journal menu
                 elif action == KEYS.K_DOWN:
-                    KeyboardController.restore(action)
+                    pass
+                    # TODO journal menu
                 elif action == KEYS.K_LEFT:
-                    KeyboardController.restore(action)
+                    pass
+                    # TODO journal menu
                 elif action == KEYS.K_RIGHT:
-                    KeyboardController.restore(action)
+                    pass
+                    # TODO journal menu

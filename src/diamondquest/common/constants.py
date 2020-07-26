@@ -41,6 +41,9 @@ Contants used elsewhere in the code.
 # Framerate
 FPS = 16
 
+# Key repeat rate in milliseconds
+KEY_REPEAT_RATE = 250
+
 # The number of pixels in a single "block" in the source textures.
 TEXTURE_RES = 16
 

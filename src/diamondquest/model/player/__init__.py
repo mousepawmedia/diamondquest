@@ -1,2 +1,6 @@
 from .tool import ToolType
-from .player import PlayerModel
+from .player import (
+    PlayerModel,
+    SpriteMode,
+    SpriteAction
+)

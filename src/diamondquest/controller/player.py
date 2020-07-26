@@ -73,20 +73,16 @@ class PlayerController:
                     print("PlayerController: process_action - Trying to move up")
                     print("Can I move up? - ", player.move(Direction.ABOVE))
                     print("New coords: col, row - ", player._location.col, player._location.row)
-                    KeyboardController.restore(action)
                 elif action == KEYS.K_DOWN:
                     print("PlayerController: process_action - Trying to move down")
                     print("Can I move down? - ",player.move(Direction.BELOW))
                     print("New coords: col, row - ", player._location.col, player._location.row)
-                    KeyboardController.restore(action)
                 elif action == KEYS.K_LEFT:
                     print("PlayerController: process_action - Trying to move left")
                     print("Can I move left? - ",player.move(Direction.LEFT))
                     print("New coords: col, row - ", player._location.col, player._location.row)
-                    KeyboardController.restore(action)
                 elif action == KEYS.K_RIGHT:
                     print("PlayerController: process_action - Trying to move right")
                     print("Can I move right? - ",player.move(Direction.RIGHT))
                     print("New coords: col, row - ", player._location.col, player._location.row)
-                    KeyboardController.restore(action)
-                
+

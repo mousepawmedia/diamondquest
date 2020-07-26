@@ -40,7 +40,7 @@ Author(s): Elizabeth Larson, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from enum import Enum
+from enum import Enum, auto
 
 import pygame
 
@@ -55,6 +55,25 @@ class PlayerAction(Enum):
     IDLE = 0
     MOVE = 1
     TOOL = 2
+
+class SpriteAction(Enum):
+    IDLE = auto()
+    WALK = auto()
+    COFFEE = auto()
+    CLIMB = auto()
+    PICKAXE = auto()
+    DRILL = auto()
+    TNT = auto()
+    PICKAXE_HANG = auto()
+    PICKAXE_HANGLEFT = auto()
+    PICKAXE_HANGRIGHT = auto()
+
+class SpriteMode():
+    STATIC = auto()
+    CLIMBING = auto()
+    COFFEE = auto()
+    HANGING = auto()
+
 
 
 class PlayerModel:

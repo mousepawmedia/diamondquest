@@ -60,7 +60,6 @@ class MenuController:
                 if action == KEYS.K_1 or action == KEYS.K_ESCAPE:
                     GameModel.mode = ModeType.MAP
                     Window.hide_view(ModeType.MENU)
-
                 # Handling arrows here
                 # They are put back in front in case arrows are held down
                 elif action == KEYS.K_UP:
@@ -70,10 +69,11 @@ class MenuController:
                     MenuModel.select_next_item()
                     # KeyboardController.restore(action)
                 elif action == KEYS.K_LEFT:
-                    KeyboardController.restore(action)
+                    pass
+                    # TODO journal menu
                 elif action == KEYS.K_RIGHT:
-                    KeyboardController.restore(action)
-
+                    pass
+                    # TODO journal menu
                 # Handling other keys
                 selected_item = MenuModel.get_selected_item()
                 if selected_item is not None:

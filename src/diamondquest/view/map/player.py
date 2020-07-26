@@ -2,8 +2,18 @@ import pygame
 
 from diamondquest.common import Color
 from diamondquest.common import Resolution
+from diamondquest.common import Direction
 
-from diamondquest.model.player import PlayerModel
+from diamondquest.model.player import PlayerModel, SpriteAction, SpriteMode
+
+
+class PrimarySpriteMap():
+
+    sprite_locations = {
+        (SpriteAction.IDLE, SpriteMode.STATIC, Direction.HERE): (0, 0),
+        # TODO other sprites
+    }
+
 
 class PlayerView(pygame.sprite.Sprite):
 
@@ -22,7 +32,7 @@ class PlayerView(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        # TODO start with actual sprite imge
+        # TODO start with actual sprite image
         self.image = pygame.Surface((50, 50))
         self.image.fill(Color.WHITE)
         self.rect = self.image.get_rect()
