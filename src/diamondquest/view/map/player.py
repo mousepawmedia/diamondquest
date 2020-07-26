@@ -33,7 +33,9 @@ class PlayerView(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         # TODO start with actual sprite image
-        self.image = pygame.Surface((50, 50))
+
+        scale = Resolution.get_primary().block_height  # TODO only valid while display is square
+        self.image = pygame.Surface((scale, scale))
         self.image.fill(Color.WHITE)
         self.rect = self.image.get_rect()
 
