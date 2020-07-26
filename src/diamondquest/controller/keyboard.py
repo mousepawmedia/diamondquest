@@ -50,7 +50,7 @@ from diamondquest.common.keys import Key
 from diamondquest.common.constants import KEY_REPEAT_RATE
 from diamondquest.eventmanager.event import TickEvent
 
-KNOWN_KEYS = [KEYS.K_UP, KEYS.K_DOWN, KEYS.K_LEFT, KEYS.K_RIGHT, KEYS.K_ESCAPE, KEYS.K_j]
+KNOWN_KEYS = [KEYS.K_UP, KEYS.K_DOWN, KEYS.K_LEFT, KEYS.K_RIGHT, KEYS.K_ESCAPE, KEYS.K_j, KEYS.K_1]
 
 class KeyboardController:
     """Enqueues action events on keydown, deques on key up."""
