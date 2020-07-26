@@ -60,13 +60,20 @@ class FontStyle(Enum):
 
 
 class FontAlign(Enum):
-   CENTER = 0
-   LEFT = 1
-   RIGHT = 2
+    CENTER = 0
+    LEFT = 1
+    RIGHT = 2
 
 
 class FontAttributes:
-    def __init__(self, fontface, size, style=FontStyle.NORMAL, align=FontAlign.CENTER, color=Color.BLACK):
+    def __init__(
+        self,
+        fontface,
+        size,
+        style=FontStyle.NORMAL,
+        align=FontAlign.CENTER,
+        color=Color.BLACK,
+    ):
         self.fontface = fontface
         self.size = size
         self.style = style
@@ -78,7 +85,4 @@ class FontAttributes:
 
 class FontAttributeDefaults:
     menu_item_width, menu_item_height = Resolution.get_primary().menu_item_dim
-    MENU = FontAttributes(
-        fontface=Fontfaces.DECORATIVE,
-        size=menu_item_height,
-    )
+    MENU = FontAttributes(fontface=Fontfaces.DECORATIVE, size=menu_item_height,)

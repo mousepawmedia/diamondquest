@@ -7,7 +7,7 @@ from diamondquest.common import Direction
 from diamondquest.model.player import PlayerModel, SpriteAction, SpriteMode
 
 
-class PrimarySpriteMap():
+class PrimarySpriteMap:
 
     sprite_locations = {
         (SpriteAction.IDLE, SpriteMode.STATIC, Direction.HERE): (0, 0),
@@ -34,7 +34,9 @@ class PlayerView(pygame.sprite.Sprite):
         super().__init__()
         # TODO start with actual sprite image
 
-        scale = Resolution.get_primary().block_height  # TODO only valid while display is square
+        scale = (
+            Resolution.get_primary().block_height
+        )  # TODO only valid while display is square
         self.image = pygame.Surface((scale, scale))
         self.image.fill(Color.WHITE)
         self.rect = self.image.get_rect()
@@ -42,6 +44,13 @@ class PlayerView(pygame.sprite.Sprite):
     def update(self, location):
         # TODO other arguments for animation, setting correct image etc
         # TODO scaling ???
-        scale = Resolution.get_primary().block_height  # TODO only valid while display is square
-        self.rect.x = location.col * scale
-        self.rect.y = location.row * scale
+        scale = (
+            Resolution.get_primary().block_height
+        )  # TODO only valid while display is square
+
+        self.rect.x = (
+            location.col % Resolution.get_primary().blocks_across
+        ) * scale
+        self.rect.y = (
+            location.row % Resolution.get_primary().blocks_across
+        ) * scale  # XXX should be height

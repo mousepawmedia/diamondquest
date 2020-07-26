@@ -46,7 +46,6 @@ from diamondquest.common.mode import ModeType
 
 
 class JournalView:
-    
     @classmethod
     def update_view(cls):
         cls.view = Window.get_view(ModeType.JOURNAL)

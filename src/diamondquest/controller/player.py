@@ -55,7 +55,7 @@ class PlayerController:
         if GameModel.mode == ModeType.MAP:
             if KeyboardController.pending():
                 action = KeyboardController.grab()
-                
+
                 player = PlayerModel.get_player()
                 # Open Menu
                 if action == KEYS.K_ESCAPE:
@@ -70,19 +70,42 @@ class PlayerController:
                 # Handling arrows here
                 # They are put back in front in case arrows are held down
                 elif action == KEYS.K_UP:
-                    print("PlayerController: process_action - Trying to move up")
+                    print(
+                        "PlayerController: process_action - Trying to move up"
+                    )
                     print("Can I move up? - ", player.move(Direction.ABOVE))
-                    print("New coords: col, row - ", player._location.col, player._location.row)
+                    print(
+                        "New coords: col, row - ",
+                        player._location.col,
+                        player._location.row,
+                    )
                 elif action == KEYS.K_DOWN:
-                    print("PlayerController: process_action - Trying to move down")
-                    print("Can I move down? - ",player.move(Direction.BELOW))
-                    print("New coords: col, row - ", player._location.col, player._location.row)
+                    print(
+                        "PlayerController: process_action - Trying to move down"
+                    )
+                    print("Can I move down? - ", player.move(Direction.BELOW))
+                    print(
+                        "New coords: col, row - ",
+                        player._location.col,
+                        player._location.row,
+                    )
                 elif action == KEYS.K_LEFT:
-                    print("PlayerController: process_action - Trying to move left")
-                    print("Can I move left? - ",player.move(Direction.LEFT))
-                    print("New coords: col, row - ", player._location.col, player._location.row)
+                    print(
+                        "PlayerController: process_action - Trying to move left"
+                    )
+                    print("Can I move left? - ", player.move(Direction.LEFT))
+                    print(
+                        "New coords: col, row - ",
+                        player._location.col,
+                        player._location.row,
+                    )
                 elif action == KEYS.K_RIGHT:
-                    print("PlayerController: process_action - Trying to move right")
-                    print("Can I move right? - ",player.move(Direction.RIGHT))
-                    print("New coords: col, row - ", player._location.col, player._location.row)
-
+                    print(
+                        "PlayerController: process_action - Trying to move right"
+                    )
+                    print("Can I move right? - ", player.move(Direction.RIGHT))
+                    print(
+                        "New coords: col, row - ",
+                        player._location.col,
+                        player._location.row,
+                    )

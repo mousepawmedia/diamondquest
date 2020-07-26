@@ -15,7 +15,7 @@ class PuzzleView:
 
         font = pygame.font.Font(
             "../assets/fonts/cascadia-code/Cascadia.ttf", 60
-        ) # TODO
+        )  # TODO
         rendered_problem = font.render(problem, True, (0, 0, 255))
         problem_display_area = rendered_problem.get_rect()
         problem_display_area.center = ()

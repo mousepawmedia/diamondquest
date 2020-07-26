@@ -108,7 +108,7 @@ class MapModel:
             return None
 
     @classmethod
-    def get_block_type(cls, coord = None):
+    def get_block_type(cls, coord=None):
         """Get block type at coordinate, but return None if not yet generated.
         Does not attempt to generate missing blocks or columns."""
         try:
@@ -123,7 +123,7 @@ class MapModel:
         for the given column.
         col - the column the player should be standing in."""
         col = cls.get_column(col_num, depth=Depth(1))
-        
+
         for row, (block, coord) in enumerate(col):
             if block.type != BlockType.AIR:
                 return Coord(col_num, row - 1)

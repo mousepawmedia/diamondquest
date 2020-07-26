@@ -111,7 +111,9 @@ class MenuView:
         cls._draw_menu_item(row, text, font, fg_color)
 
     @classmethod
-    def _draw_menu_item(cls, row, text, font, fg_color, bg_color=Color.WOOD_LIGHT):
+    def _draw_menu_item(
+        cls, row, text, font, fg_color, bg_color=Color.WOOD_LIGHT
+    ):
         item_width, item_height = Resolution.get_primary().menu_item_dim
         item_x = cls.horizontal_margin
         item_y = row * item_height

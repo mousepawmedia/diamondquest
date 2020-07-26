@@ -79,6 +79,12 @@ class MapView:
         # TODO: Render sprite next using separate functions
         PlayerView.get_primary().draw(cls.view.surface)
 
+        cls.section = Section(
+            PlayerModel.get_player()._location.col
+            // cls.section.res.blocks_across
+            + 1
+        )
+
         Window.update_view()
 
     # TODO: Build `page()` classmethod for changing depth and section.
@@ -127,10 +133,8 @@ class MapView:
         cls.view.surface.blit(
             block_surface,
             coord.relative(
-                depth=cls.depth,
-                section=cls.section,
-                scale=block_size
-            )
+                depth=cls.depth, section=cls.section, scale=block_size
+            ),
         )
         # Render decorations.
         # TODO: This will NOT work with offsets into unrendered blocks!
@@ -142,7 +146,7 @@ class MapView:
                 coord.get_adjacent(offset).relative(
                     depth=Depth.of(coord.row),
                     section=Section.of(coord.col),
-                    scale=block_size
+                    scale=block_size,
                 ),
             )
 

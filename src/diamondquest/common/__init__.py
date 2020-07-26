@@ -7,6 +7,6 @@ from .font import (
     FontAlign,
     FontStyle,
     Fontfaces,
-    FontAttributeDefaults
+    FontAttributeDefaults,
 )
 from .mode import ModeType

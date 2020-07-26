@@ -56,6 +56,7 @@ class PlayerAction(Enum):
     MOVE = 1
     TOOL = 2
 
+
 class SpriteAction(Enum):
     IDLE = auto()
     WALK = auto()
@@ -68,12 +69,12 @@ class SpriteAction(Enum):
     PICKAXE_HANGLEFT = auto()
     PICKAXE_HANGRIGHT = auto()
 
-class SpriteMode():
+
+class SpriteMode:
     STATIC = auto()
     CLIMBING = auto()
     COFFEE = auto()
     HANGING = auto()
-
 
 
 class PlayerModel:
@@ -126,6 +127,11 @@ class PlayerModel:
 
     def move(self, direction):
         """Move in a particular direction."""
+        if False:  # Turn on 'spectator/god mode', allows noclip
+            self._location = self._location.get_adjacent(direction)
+            self.reorient()
+            return True
+
         if self._locality.can_occupy(direction):
             self._location = self._location.get_adjacent(direction)
             self.reorient()
@@ -149,6 +155,7 @@ class PlayerModel:
 
             self._location = original_location
         return False
+
 
 '''
     @property.getter

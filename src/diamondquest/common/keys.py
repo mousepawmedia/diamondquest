@@ -40,10 +40,13 @@ Author(s): Mohaned Mashaly
 # on how to contribute to our projects.
 
 import pygame.locals as KEYS
+
+
 class Key:
     arrows = (KEYS.K_UP, KEYS.K_DOWN, KEYS.K_LEFT, KEYS.K_RIGHT)
+
     @classmethod
-    def in_arrows(cls,event):
+    def in_arrows(cls, event):
         if event in cls.arrows:
             return True
         return False

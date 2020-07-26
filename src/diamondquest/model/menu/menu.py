@@ -113,10 +113,9 @@ class MenuItem(abc.ABC):
 class TextItem(MenuItem):
     """A menu item that is only static text."""
 
-    def __init__(self,
-                 text,
-                 attributes=FontAttributeDefaults.MENU,
-                 ):
+    def __init__(
+        self, text, attributes=FontAttributeDefaults.MENU,
+    ):
         super().__init__()
         self.text = text
         self.attributes = attributes
@@ -133,10 +132,10 @@ class ButtonItem(MenuItem):
     """An interactive menu item."""
 
     def __init__(
-            self,
-            text,
-            attributes=FontAttributeDefaults.MENU,
-            button_type=ButtonType.STATIC,
+        self,
+        text,
+        attributes=FontAttributeDefaults.MENU,
+        button_type=ButtonType.STATIC,
     ):
         super().__init__()
         self.text_item = TextItem(text, attributes)
@@ -158,16 +157,24 @@ class MenuModel:
     @classmethod
     def initialize(cls):
         cls.buttons["text_existing_miner"] = TextItem(text="Existing Miner")
-        cls.buttons["scroll_existing_miner"] = ButtonItem(text="<no miners found>", button_type=ButtonType.SCROLL)
+        cls.buttons["scroll_existing_miner"] = ButtonItem(
+            text="<no miners found>", button_type=ButtonType.SCROLL
+        )
         cls.buttons["text_new_miner"] = TextItem(text="New Miner")
-        cls.buttons["input_new_miner"] = ButtonItem(text="Enter Name", button_type=ButtonType.INPUT)
-        cls.buttons["scroll_music_volume"] = ButtonItem(text="Music: 10", button_type=ButtonType.SCROLL)
-        cls.buttons["scroll_sound_volume"] = ButtonItem(text="Sound: 10", button_type=ButtonType.SCROLL)
+        cls.buttons["input_new_miner"] = ButtonItem(
+            text="Enter Name", button_type=ButtonType.INPUT
+        )
+        cls.buttons["scroll_music_volume"] = ButtonItem(
+            text="Music: 10", button_type=ButtonType.SCROLL
+        )
+        cls.buttons["scroll_sound_volume"] = ButtonItem(
+            text="Sound: 10", button_type=ButtonType.SCROLL
+        )
         cls.buttons["button_quit"] = ButtonItem(text="QUIT")
 
         cls.buttons["button_quit"].add_key_down_listener(
-            pygame.K_RETURN,
-            lambda: GameModel.stop_game())
+            pygame.K_RETURN, lambda: GameModel.stop_game()
+        )
 
         cls.menus[MenuType.GAME] = MenuModel(
             title="DiamondQuest",
@@ -179,7 +186,8 @@ class MenuModel:
                 cls.buttons["scroll_music_volume"],
                 cls.buttons["scroll_sound_volume"],
                 cls.buttons["button_quit"],
-            ])
+            ],
+        )
         cls.menus[MenuType.DEV] = MenuModel(title="DevMenu", items=[])
 
     @classmethod
@@ -227,5 +235,3 @@ class MenuModel:
             return menu.items[menu.selected_item]
         else:
             return None
-
-

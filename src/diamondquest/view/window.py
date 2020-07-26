@@ -88,7 +88,9 @@ class Window:
         flags = pygame.DOUBLEBUF | pygame.SCALED
         if fullscreen:
             flags |= pygame.FULLSCREEN
-        screen = pygame.display.set_mode(Resolution.get_primary().resolution, flags)
+        screen = pygame.display.set_mode(
+            Resolution.get_primary().resolution, flags
+        )
 
         # Write the caption to the screen.
         pygame.display.set_caption(constants.TITLE)
