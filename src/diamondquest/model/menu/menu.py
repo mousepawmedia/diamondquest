@@ -3,7 +3,7 @@ Menu Model [DiamondQuest]
 
 Defines a menu.
 
-Author(s): Wilfrantz Dede, Jason C. McDonald
+Author(s): Wilfrantz Dede, Jason C. McDonald, Stanislav Schmidt
 """
 
 # LICENSE (BSD-3-Clause)
@@ -62,6 +62,16 @@ class MenuItem(abc.ABC):
     def __init__(self):
         self.key_down_listeners = collections.defaultdict(list)
 
+    @property
+    @abc.abstractmethod
+    def text(self):
+        """The text of the menu item."""
+
+    @property
+    @abc.abstractmethod
+    def text_attributes(self):
+        """The text attributes of the menu item."""
+
     def add_key_down_listener(self, key, listener):
         """Add a key down listener.
 
@@ -114,12 +124,23 @@ class TextItem(MenuItem):
     """A menu item that is only static text."""
 
     def __init__(
-        self, text, attributes=FontAttributeDefaults.MENU,
+            self,
+            text,
+            attributes=FontAttributeDefaults.MENU,
     ):
         super().__init__()
-        self.text = text
+        self.raw_text = text
         self.attributes = attributes
         # icon
+
+    @property
+    def text(self):
+        return self.raw_text
+
+    @property
+    def text_attributes(self):
+        return self.attributes
+
 
 
 class ButtonType(Enum):
@@ -141,6 +162,14 @@ class ButtonItem(MenuItem):
         self.text_item = TextItem(text, attributes)
         self.button_type = button_type
 
+    @property
+    def text(self):
+        return self.text_item.text
+
+    @property
+    def text_attributes(self):
+        return self.text_item.text_attributes
+
 
 class MenuType(Enum):
     GAME = 0
@@ -150,44 +179,35 @@ class MenuType(Enum):
 class MenuModel:
     """The model for the menu."""
 
-    buttons = {}  # a dictionary storing button instances
+    menu_items = {}  # a dictionary storing button instances
     menus = {}  # a dictionary storing menu instances
     menu_in_use = MenuType.GAME  # which menu the game is currently using
 
     @classmethod
     def initialize(cls):
-        cls.buttons["text_existing_miner"] = TextItem(text="Existing Miner")
-        cls.buttons["scroll_existing_miner"] = ButtonItem(
-            text="<no miners found>", button_type=ButtonType.SCROLL
-        )
-        cls.buttons["text_new_miner"] = TextItem(text="New Miner")
-        cls.buttons["input_new_miner"] = ButtonItem(
-            text="Enter Name", button_type=ButtonType.INPUT
-        )
-        cls.buttons["scroll_music_volume"] = ButtonItem(
-            text="Music: 10", button_type=ButtonType.SCROLL
-        )
-        cls.buttons["scroll_sound_volume"] = ButtonItem(
-            text="Sound: 10", button_type=ButtonType.SCROLL
-        )
-        cls.buttons["button_quit"] = ButtonItem(text="QUIT")
+        cls.menu_items["text_existing_miner"] = TextItem(text="Existing Miner")
+        cls.menu_items["scroll_existing_miner"] = ButtonItem(text="<none>", button_type=ButtonType.SCROLL)
+        cls.menu_items["text_new_miner"] = TextItem(text="New Miner")
+        cls.menu_items["input_new_miner"] = ButtonItem(text="Enter Name", button_type=ButtonType.INPUT)
+        cls.menu_items["scroll_music_volume"] = ButtonItem(text="Music: 10", button_type=ButtonType.SCROLL)
+        cls.menu_items["scroll_sound_volume"] = ButtonItem(text="Sound: 10", button_type=ButtonType.SCROLL)
+        cls.menu_items["button_quit"] = ButtonItem(text="QUIT")
 
-        cls.buttons["button_quit"].add_key_down_listener(
-            pygame.K_RETURN, lambda: GameModel.stop_game()
-        )
+        cls.menu_items["button_quit"].add_key_down_listener(
+            pygame.K_RETURN,
+            lambda: GameModel.stop_game())
 
         cls.menus[MenuType.GAME] = MenuModel(
             title="DiamondQuest",
             items=[
-                cls.buttons["text_existing_miner"],
-                cls.buttons["scroll_existing_miner"],
-                cls.buttons["text_new_miner"],
-                cls.buttons["input_new_miner"],
-                cls.buttons["scroll_music_volume"],
-                cls.buttons["scroll_sound_volume"],
-                cls.buttons["button_quit"],
-            ],
-        )
+                cls.menu_items["text_existing_miner"],
+                cls.menu_items["scroll_existing_miner"],
+                cls.menu_items["text_new_miner"],
+                cls.menu_items["input_new_miner"],
+                cls.menu_items["scroll_music_volume"],
+                cls.menu_items["scroll_sound_volume"],
+                cls.menu_items["button_quit"],
+            ])
         cls.menus[MenuType.DEV] = MenuModel(title="DevMenu", items=[])
 
     @classmethod
@@ -210,8 +230,17 @@ class MenuModel:
     def __init__(self, title, items):
         self.title = TextItem(title)
         self.items = items
-        self.selected_item = 0
-        self.item_switch_counter = 0
+        self.selectable_items = [
+            i for i, item in enumerate(items)
+            if isinstance(item, ButtonItem)
+        ]
+        self.which_selected = 0 if len(self.selectable_items) > 0 else -1
+
+    @property
+    def selected_item_idx(self):
+        if self.which_selected == -1:
+            return -1
+        return self.selectable_items[self.which_selected]
 
     def __iter__(self):
         iter(self.items)
@@ -219,19 +248,20 @@ class MenuModel:
     @classmethod
     def select_next_item(cls):
         menu = cls.get_menu()
-        n_items = len(menu.items)
-        menu.selected_item = (menu.selected_item + 1) % n_items
+        n_items = len(menu.selectable_items)
+        menu.which_selected = (menu.which_selected + 1) % n_items
 
     @classmethod
     def select_prev_item(cls):
         menu = cls.get_menu()
-        n_items = len(menu.items)
-        menu.selected_item = (menu.selected_item - 1 + n_items) % n_items
+        n_items = len(menu.selectable_items)
+        menu.which_selected = (menu.which_selected - 1 + n_items) % n_items
 
     @classmethod
     def get_selected_item(cls):
         menu = cls.get_menu()
-        if menu.selected_item < len(menu.items):
-            return menu.items[menu.selected_item]
+        idx = menu.selected_item_idx
+        if idx > 0:
+            return menu.items[idx]
         else:
             return None

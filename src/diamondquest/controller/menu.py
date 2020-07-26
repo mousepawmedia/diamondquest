@@ -3,7 +3,7 @@ MenuController [DiamondQuest]
 
 Controller for Menu.
 
-Author(s): Harley Davis, Jason C. McDonald
+Author(s): Harley Davis, Jason C. McDonald, Stanislav Schmidt
 """
 
 # LICENSE (BSD-3-Clause)
@@ -75,6 +75,7 @@ class MenuController:
                     pass
                     # TODO journal menu
                 # Handling other keys
+
                 selected_item = MenuModel.get_selected_item()
                 if selected_item is not None:
                     selected_item.handle_key_press(action)

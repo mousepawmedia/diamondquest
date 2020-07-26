@@ -3,7 +3,7 @@ KeyboardController [DiamondQuest]
 
 The KeyboardController handles keyboard input events
 
-Author(s): Harley Davis, Mohaned Mashaly, Jason C. McDonald
+Author(s): Harley Davis, Mohaned Mashaly, Jason C. McDonald, Stanislav Schmidt
 """
 
 # LICENSE (BSD-3-Clause)
@@ -57,6 +57,7 @@ KNOWN_KEYS = [
     KEYS.K_RIGHT,
     KEYS.K_ESCAPE,
     KEYS.K_j,
+    KEYS.K_RETURN
 ]
 
 
