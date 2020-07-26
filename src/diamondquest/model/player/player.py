@@ -129,7 +129,25 @@ class PlayerModel:
         if self._locality.can_occupy(direction):
             self._location = self._location.get_adjacent(direction)
             self.reorient()
+
+            # However, if we can also move down we go down!
+            if self._locality.can_occupy(Direction.BELOW):
+                self._location = self._location.get_adjacent(Direction.BELOW)
+                self.reorient()
+
             return True
+        elif self._locality.can_occupy(Direction.ABOVE):
+            original_location = self._location
+
+            self._location = self._location.get_adjacent(Direction.ABOVE)
+            self.reorient()
+
+            if self._locality.can_occupy(direction):
+                self._location = self._location.get_adjacent(direction)
+                self.reorient()
+                return True
+
+            self._location = original_location
         return False
 
 '''
