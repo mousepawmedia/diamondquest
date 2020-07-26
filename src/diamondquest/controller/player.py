@@ -3,7 +3,7 @@ PlayerController [DiamondQuest]
 
 Controller for Player.
 
-Author(s): Harley Davis, Jason C. McDonald
+Author(s): Harley Davis, Jason C. McDonald, Stanislav Schmidt
 """
 
 # LICENSE (BSD-3-Clause)
@@ -40,6 +40,8 @@ Author(s): Harley Davis, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
+import logging
+
 import pygame.locals as KEYS
 
 from diamondquest.controller import KeyboardController
@@ -47,6 +49,9 @@ from diamondquest.model.game import GameModel
 from diamondquest.model.player import PlayerModel
 from diamondquest.common import ModeType, Direction
 from diamondquest.view.window import Window
+
+
+logger = logging.getLogger(__name__)
 
 
 class PlayerController:
@@ -70,42 +75,42 @@ class PlayerController:
                 # Handling arrows here
                 # They are put back in front in case arrows are held down
                 elif action == KEYS.K_UP:
-                    print(
+                    logger.debug(
                         "PlayerController: process_action - Trying to move up"
                     )
-                    print("Can I move up? - ", player.move(Direction.ABOVE))
-                    print(
-                        "New coords: col, row - ",
-                        player._location.col,
-                        player._location.row,
+                    logger.debug(f"Can I move up? - {player.move(Direction.ABOVE)}")
+                    logger.debug(
+                        "New coords: col, row - "
+                        f"{player._location.col}"
+                        f"{player._location.row}"
                     )
                 elif action == KEYS.K_DOWN:
-                    print(
+                    logger.debug(
                         "PlayerController: process_action - Trying to move down"
                     )
-                    print("Can I move down? - ", player.move(Direction.BELOW))
-                    print(
-                        "New coords: col, row - ",
-                        player._location.col,
-                        player._location.row,
+                    logger.debug(f"Can I move down? - {player.move(Direction.BELOW)}")
+                    logger.debug(
+                        "New coords: col, row - "
+                        f"{player._location.col}"
+                        f"{player._location.row}"
                     )
                 elif action == KEYS.K_LEFT:
-                    print(
+                    logger.debug(
                         "PlayerController: process_action - Trying to move left"
                     )
-                    print("Can I move left? - ", player.move(Direction.LEFT))
-                    print(
-                        "New coords: col, row - ",
-                        player._location.col,
-                        player._location.row,
+                    logger.debug(f"Can I move left? - {player.move(Direction.LEFT)}")
+                    logger.debug(
+                        "New coords: col, row - "
+                        f"{player._location.col}"
+                        f"{player._location.row}"
                     )
                 elif action == KEYS.K_RIGHT:
-                    print(
+                    logger.debug(
                         "PlayerController: process_action - Trying to move right"
                     )
-                    print("Can I move right? - ", player.move(Direction.RIGHT))
-                    print(
-                        "New coords: col, row - ",
-                        player._location.col,
-                        player._location.row,
+                    logger.debug(f"Can I move right? - {player.move(Direction.RIGHT)}")
+                    logger.debug(
+                        "New coords: col, row - "
+                        f"{player._location.col}"
+                        f"{player._location.row}"
                     )

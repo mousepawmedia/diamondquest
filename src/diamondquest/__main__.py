@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import logging
+
 import pygame
 from pygame.locals import *
 
@@ -26,6 +28,8 @@ from diamondquest.common import options
 
 # Temporary imports here...
 # from diamondquest.model.map.loot import LootTables
+
+logger = logging.getLogger(__name__)
 
 
 def terrible_test_code_function():
@@ -60,6 +64,7 @@ def main():
     print("Esc to toggle menu")
     print("J to toggle Journal")
 
+    logger.info("Entering event loop")
     while GameModel.running:
         if not options.noclip:
             player.move(Direction.BELOW)
@@ -97,5 +102,7 @@ def update_views():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+
     main()
     # terrible_test_code_function()
