@@ -17,6 +17,7 @@ from diamondquest.view.map import MapView, PlayerView  # noqa: E402
 from diamondquest.view.puzzle import PuzzleView  # noqa: E402
 from diamondquest.view.journal import JournalView  # noqa: E402
 from diamondquest.view.menu import MenuView  # noqa: E402
+from diamondquest.model.menu import MenuModel  # noqa: E402
 from diamondquest.model.game import GameModel  # noqa: E402
 from diamondquest.common.mode import ModeType  # noqa: E402
 
@@ -42,9 +43,10 @@ def main():
 
     # model = GameModel()
     window = Window()
-    window.draw()
+    window.draw(fullscreen=False)
 
     GameModel.on_start()
+    MenuModel.initialize()
     MapView.update_view()
     window.show_view(ModeType.MAP)
     window.show_view(ModeType.MENU)
@@ -53,16 +55,15 @@ def main():
     print("Esc to toggle menu")
     print("J to toggle Journal")
 
-    running = True
-    while running:
+    while GameModel.running:
         # Keep the loop running at roughly 16 FPS.
         # TODO: Is there a better way to handle this?
         clock.tick(FPS)
 
         # Controller Tick - Handle Input
-        running = KeyboardController.handle_input()
+        GameModel.running = KeyboardController.handle_input()
 
-        if running:
+        if GameModel.running:
             # System Tick - Update Model
             update_controllers()
             # View Tick - Update View

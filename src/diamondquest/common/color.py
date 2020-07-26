@@ -43,4 +43,5 @@ class Color:
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     WOOD = (71, 36, 36)
+    WOOD_LIGHT = (100, 50, 50)
     SKY = (135, 206, 235)

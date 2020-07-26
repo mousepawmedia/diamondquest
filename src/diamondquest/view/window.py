@@ -75,9 +75,20 @@ class Window:
         cls.view_cache = dict()
 
     @classmethod
-    def draw(cls):
+    def draw(cls, fullscreen=False):
         """Draw the screen from scratch."""
-        screen = pygame.display.set_mode(Resolution.get_primary().resolution)
+        # From https://www.pygame.org/docs/ref/display.html#pygame.display.set_mode
+        # pygame.FULLSCREEN    create a fullscreen display
+        # pygame.DOUBLEBUF     recommended for HWSURFACE or OPENGL
+        # pygame.HWSURFACE     hardware accelerated, only in FULLSCREEN
+        # pygame.OPENGL        create an OpenGL-renderable display
+        # pygame.RESIZABLE     display window should be sizeable
+        # pygame.NOFRAME       display window will have no border or controls
+        # pygame.SCALED        resolution depends on desktop size and scale graphics
+        flags = pygame.DOUBLEBUF | pygame.SCALED
+        if fullscreen:
+            flags |= pygame.FULLSCREEN
+        screen = pygame.display.set_mode(Resolution.get_primary().resolution, flags)
 
         # Write the caption to the screen.
         pygame.display.set_caption(constants.TITLE)
@@ -167,5 +178,5 @@ class Window:
         elif view == ModeType.JOURNAL:
             width, height, x, y = Resolution.get_primary().journal_area
         elif view == ModeType.MENU:
-            width, height, x, y = Resolution.get_primary().journal_area
+            width, height, x, y = Resolution.get_primary().menu_area
         return View(view, pygame.Surface((width, height)), (x, y))

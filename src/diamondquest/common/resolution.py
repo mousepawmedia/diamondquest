@@ -65,7 +65,7 @@ class Resolution:
 
     @property
     def resolution(self):
-        return (self.width, self.height)
+        return self.width, self.height
 
     @property
     def block_height(self):
@@ -74,6 +74,27 @@ class Resolution:
         """
         map_height = self.map_area[1]
         return math.floor(map_height / constants.BLOCK_COUNT)
+
+    @property
+    def menu_item_dim(self):
+        """Dimensions of the menu items.
+
+        The width of the menu items is set to be equal to
+        the width of the menu area. The height is set to
+        be 2/3 of the block height.
+
+        Returns
+        -------
+        menu_item_width : int
+            The width of a menu item.
+        menu_item_height : int
+            The height of a menu item.
+        """
+        menu_width, *_ = self.menu_area
+        menu_item_width = menu_width
+        menu_item_height = self.block_height * 2 // 3
+
+        return menu_item_width, menu_item_height
 
     @property
     def map_area(self):
@@ -116,7 +137,11 @@ class Resolution:
         x = (map_width - width) / 2
         y += block / 2
 
-        return (width, height, x, y)
+        return width, height, x, y
+
+    @property
+    def menu_area(self):
+        return self.journal_area
 
     @property
     def blocks_across(self):

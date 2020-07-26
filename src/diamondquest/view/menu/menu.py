@@ -49,19 +49,81 @@ Author(s): Wilfrantz Dede, Jason C. McDonald
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-from diamondquest.common import Color
+import pygame
+
+import diamondquest
+from diamondquest.common import Color, Resolution
 from diamondquest.view.window import Window
 from diamondquest.common.mode import ModeType
 from diamondquest.model.menu import MenuModel
+from diamondquest.model.menu import ButtonType
 
 
 class MenuView:
+    horizontal_margin = 5
+    vertical_margin = 5
+
     @classmethod
     def update_view(cls):
         cls.view = Window.get_view(ModeType.MENU)
         Window.add_shadow_under(ModeType.MENU)  # TEMPORARY ONLY!
         cls.view.surface.fill(Color.WOOD)
 
+        cls.menu = MenuModel.get_menu()
+        cls._draw_text_item(row=0, text_item=cls.menu.title)
+        for row, item in enumerate(cls.menu.items, start=1):
+            if isinstance(item, diamondquest.model.menu.TextItem):
+                cls._draw_text_item(row, item)
+            elif isinstance(item, diamondquest.model.menu.ButtonItem):
+                cls._draw_button_item(row, item)
+
     @classmethod
     def redraw(cls):
         """Render the view to the screen."""
+
+    @classmethod
+    def _draw_text_item(cls, row, text_item):
+        """Render a text item."""
+        fontface = text_item.attributes.fontface
+        size = text_item.attributes.size
+        style = text_item.attributes.style
+        align = text_item.attributes.align
+        color = text_item.attributes.color
+
+        font = text_item.attributes._font
+        if row == cls.menu.selected_item + 1:
+            fg_color = Color.WHITE
+        else:
+            fg_color = text_item.attributes.color
+
+        cls._draw_menu_item(row, text_item.text, font, fg_color)
+
+    @classmethod
+    def _draw_button_item(cls, row, button_item):
+        """Render a button item."""
+        if row == cls.menu.selected_item + 1:
+            fg_color = Color.WHITE
+        else:
+            fg_color = button_item.text_item.attributes.color
+
+        text = button_item.text_item.text
+        font = button_item.text_item.attributes._font
+        cls._draw_menu_item(row, text, font, fg_color)
+
+    @classmethod
+    def _draw_menu_item(cls, row, text, font, fg_color, bg_color=Color.WOOD_LIGHT):
+        item_width, item_height = Resolution.get_primary().menu_item_dim
+        item_x = cls.horizontal_margin
+        item_y = row * item_height
+
+        # Draw background
+        left = item_x
+        top = item_y + cls.vertical_margin
+        width = item_width - 2 * cls.horizontal_margin
+        height = item_height - cls.vertical_margin
+        bg_rect = pygame.Rect(left, top, width, height)
+        pygame.draw.rect(cls.view.surface, bg_color, bg_rect)
+
+        # Draw text
+        text_surface = font.render(text, True, fg_color)
+        cls.view.surface.blit(text_surface, dest=(item_x, item_y))

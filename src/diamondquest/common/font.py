@@ -44,6 +44,7 @@ from enum import Enum
 
 from diamondquest.common import Color
 from diamondquest.common import loader
+from diamondquest.common import Resolution
 
 
 class Fontfaces:
@@ -76,7 +77,8 @@ class FontAttributes:
 
 
 class FontAttributeDefaults:
+    menu_item_width, menu_item_height = Resolution.get_primary().menu_item_dim
     MENU = FontAttributes(
         fontface=Fontfaces.DECORATIVE,
-        size=60  # HACK! This needs to be a FontSize object determined by the Resolution
+        size=menu_item_height,
     )

@@ -43,6 +43,7 @@ Author(s): Harley Davis, Jason C. McDonald
 import pygame.locals as KEYS
 
 from diamondquest.controller import KeyboardController
+from diamondquest.model.menu import MenuModel
 from diamondquest.model.game import GameModel
 from diamondquest.common.mode import ModeType
 from diamondquest.view.window import Window
@@ -63,10 +64,17 @@ class MenuController:
                 # Handling arrows here
                 # They are put back in front in case arrows are held down
                 elif action == KEYS.K_UP:
-                    KeyboardController.restore(action)
+                    MenuModel.select_prev_item()
+                    # KeyboardController.restore(action)
                 elif action == KEYS.K_DOWN:
-                    KeyboardController.restore(action)
+                    MenuModel.select_next_item()
+                    # KeyboardController.restore(action)
                 elif action == KEYS.K_LEFT:
                     KeyboardController.restore(action)
                 elif action == KEYS.K_RIGHT:
                     KeyboardController.restore(action)
+
+                # Handling other keys
+                selected_item = MenuModel.get_selected_item()
+                if selected_item is not None:
+                    selected_item.handle_key_press(action)

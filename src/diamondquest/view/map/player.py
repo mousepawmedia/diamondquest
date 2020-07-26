@@ -31,6 +31,5 @@ class PlayerView(pygame.sprite.Sprite):
         # TODO other arguments for animation, setting correct image etc
         # TODO scaling ???
         scale = Resolution.get_primary().block_height  # TODO only valid while display is square
-        print('scale', scale)
         self.rect.x = location.col * scale
         self.rect.y = location.row * scale

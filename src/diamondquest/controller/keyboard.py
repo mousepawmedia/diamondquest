@@ -66,7 +66,7 @@ class KeyboardController:
             else:
                 if event.type == KEYS.KEYUP:
                     # Arrow keys
-                    if Key.in_arrows(event.key):
+                    if Key.in_arrows(event.key) and event.key in cls.action_que:
                         cls.action_que.remove(event.key)
             # Other items from above, tools, movement mode etc,
             # May not be needed if they aren't "repeatable"
