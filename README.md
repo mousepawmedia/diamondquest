@@ -24,7 +24,7 @@ about platformer games. Get ready for the most fun you've ever had with math.
 
 ## Dependencies
 
-DiamondQuest is built with **Python 3.7** and **PyGame**.
+DiamondQuest is built with **Python 3.7** and **Wasabi2D**.
 See *requirements.txt* for full dependency list.
 
 ## Running the Game
@@ -60,6 +60,7 @@ Programming:
  - [Jason C. McDonald]: programming lead
  - [Graham Mix]
  - Kinyanjui "Kelvin" Wangonya
+ - [Anna R. Dunster]
 
 Graphics:
  - [Anna R. Dunster]: treasure textures

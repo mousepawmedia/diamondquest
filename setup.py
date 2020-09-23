@@ -35,6 +35,6 @@ setuptools.setup(
         ],
     },
     install_requires=[
-        'pygame>=2.0.0.dev10'
+        'wasabi2d==1.4.0'
     ],
 )
