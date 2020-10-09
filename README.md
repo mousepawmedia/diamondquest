@@ -59,7 +59,6 @@ Programming:
  - Mohaned Mashaly
  - [Jason C. McDonald]: programming lead
  - [Graham Mix]
- - Kinyanjui "Kelvin" Wangonya
  - [Anna R. Dunster]
 
 Graphics:
