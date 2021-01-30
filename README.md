@@ -35,7 +35,7 @@ that supports Makefiles, you can simply run `make run`.
 Otherwise, create a Python 3.7 virtual environment, and install the package
 directly into it, using the following commands from the root of the repository:
 
-```
+``` bash
 python3.7 -m venv venv   # create the virtual environment
 venv/bin/pip install .   # install the package from the repository
 venv/bin/python3 -m diamondquest   # run DiamondQuest in the virtual environment
@@ -50,28 +50,32 @@ Thanks to everyone who got involved!
 MousePaw Media staff is denoted by [brackets].
 
 Programming:
- - Harley Davis
- - [Wilfrantz Dede]
- - [Jacob Frazier]
- - [Muhammad Adeel Hussain]
- - [Elizabeth Larson]
- - [Ben Lovy]
- - Mohaned Mashaly
- - [Jason C. McDonald]: programming lead
- - [Graham Mix]
- - [Anna R. Dunster]
+
+- Harley Davis
+- [Wilfrantz Dede]
+- [Anna Dunster]
+- [Jacob Frazier]
+- [Muhammad Adeel Hussain]
+- [Elizabeth Larson]
+- [Ben Lovy]
+- Mohaned Mashaly
+- [Jason C. McDonald]: programming lead
+- [Graham Mix]
 
 Graphics:
- - [Anna R. Dunster]: treasure textures
- - [Elizabeth Larson]: miner avatar, splash screen
- - Wightking: block textures
+
+- [Anna R. Dunster]: treasure textures
+- [Elizabeth Larson]: miner avatar, splash screen
+- Wightking: block textures
 
 Sounds/Music:
- - [Jason C. McDonald]: menu music
+
+- [Jason C. McDonald]: menu music
 
 Educational Design:
- - [Jason C. McDonald]
- - [Graham Mix]
+
+- [Jason C. McDonald]
+- [Graham Mix]
 
 ## Development
 
