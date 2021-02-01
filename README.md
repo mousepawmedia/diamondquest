@@ -33,12 +33,22 @@ You can run the game directly from this repository. If you're on a system
 that supports Makefiles, you can simply run `make run`.
 
 Otherwise, create a Python 3.7 virtual environment, and install the package
-directly into it, using the following commands from the root of the repository:
+directly into it, using the following commands from the root of the repository.
 
-```
+Linux based systems:
+
+```bash
 python3.7 -m venv venv   # create the virtual environment
 venv/bin/pip install .   # install the package from the repository
 venv/bin/python3 -m diamondquest   # run DiamondQuest in the virtual environment
+```
+
+Windows systems:
+
+```cmd
+python3.7 -m venv venv      # create the virtual environment
+venv\scripts\python.exe -m pip install . # install the package from the repository
+venv\scripts\python.exe -m diamondquest  # run DiamondQuest in the virtual environment
 ```
 
 ## Credits
@@ -50,28 +60,30 @@ Thanks to everyone who got involved!
 MousePaw Media staff is denoted by [brackets].
 
 Programming:
- - Harley Davis
- - [Wilfrantz Dede]
- - [Jacob Frazier]
- - [Muhammad Adeel Hussain]
- - [Elizabeth Larson]
- - [Ben Lovy]
- - Mohaned Mashaly
- - [Jason C. McDonald]: programming lead
- - [Graham Mix]
- - Kinyanjui "Kelvin" Wangonya
+
+- Harley Davis
+- [Wilfrantz Dede]
+- [Anna Dunster]
+- [Jacob Frazier]
+- [Muhammad Adeel Hussain]
+- [Elizabeth Larson]
+- [Ben Lovy]
+- Mohaned Mashaly
+- [Jason C. McDonald]: programming lead
 
 Graphics:
- - [Anna R. Dunster]: treasure textures
- - [Elizabeth Larson]: miner avatar, splash screen
- - Wightking: block textures
+
+- [Anna R. Dunster]: treasure textures
+- [Elizabeth Larson]: miner avatar, splash screen
+- Wightking: block textures
 
 Sounds/Music:
- - [Jason C. McDonald]: menu music
+
+- [Jason C. McDonald]: menu music
 
 Educational Design:
- - [Jason C. McDonald]
- - [Graham Mix]
+
+- [Jason C. McDonald]
 
 ## Development
 
